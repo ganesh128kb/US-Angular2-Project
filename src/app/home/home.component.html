@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Most Recent Lists</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div *ngFor="let list of lists | slice:0:5; let i=index" class="button--recent-list col-sm-2">
+            <a href="#/list/{{list._id}}">{{ list.listName }}</a>
+        </div>
+    </div>
+    <div id="top-five">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Global Priorities Top 5</h2>
+                <div>{{ globals.globalTip }}</div>
+            </div>
+            <div class="row">
+                <div *ngFor="let prioritiesTop of prioritiesTop" class="top-five__thumb col-sm-2">
+                    {{prioritiesTop}}
+                </div>
+            </div>
+        </div>
+    </div>

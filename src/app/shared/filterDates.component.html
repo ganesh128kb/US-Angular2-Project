@@ -1,0 +1,66 @@
+<div class="modal-body">
+    <div>
+        <h4 class="modal-title text-center">Select Period</h4>
+    </div>
+    <form #dateFilter="ngForm" (ngSubmit)="onSubmit(dateFilter.value)">
+        <fieldset class="col">
+            <div id="filter__period" class="mx-auto">
+                <div [(ngModel)]="radioModel" ngbRadioGroup name="period">
+                    <label class="btn btn-primary">
+	    			              <input name="periodWeek" type="radio" value="Week"> Weekly
+	  			          </label>
+                    <label class="btn btn-primary">
+	    			              <input name="periodMonth" type="radio" value="Month"> Monthly
+	  			          </label>
+                    <label class="btn btn-primary">
+	    			              <input name="periodQuarter" type="radio" value="Quarter"> Quarterly
+	  			          </label>
+                    <label class="btn btn-primary">
+						              <input name="periodYear" type="radio" value="Year"> Yearly
+					         </label>
+                </div>
+            </div>
+        </fieldset>
+        <div class="row">
+            <div *ngIf="dateFilter.value.period != null" class="col">
+                <h4 class="modal-title text-center">Select <span *ngIf="dateFilter.value.period === 'Week'">end of release </span>{{dateFilter.value.period}}</h4>
+            </div>
+        </div>
+        <fieldset>
+            <div class="row">
+              <div class="col-12 text-center">
+                <div *ngIf="dateFilter.value.period === 'Quarter'" class="text-center padding-top">
+                    <select name="quarter" [(ngModel)]="dateQuarter">
+                <option *ngFor="let x of quarters" value="dateQuarter" [value]="x">{{ x }}</option>
+              </select>
+                </div>
+                <div *ngIf="dateFilter.value.period === 'Month'" class="text-center padding-top">
+                    <select name="month" [(ngModel)]="dateMonth">
+                  <option *ngFor="let x of months; let i = index" value="dateMonth" [value]="x.val">{{ x.name }}</option>
+                </select>
+                </div>
+                <div *ngIf="dateFilter.value.period === 'Month' || dateFilter.value.period === 'Year'" class="text-center padding-top">
+                    <select name="year" [(ngModel)]="dateYear">
+                  <option *ngFor="let x of years; let i = index" value="dateYear" [value]="x">{{ x }}</option>
+                </select>
+                </div>
+                <div id="week-cal" *ngIf="dateFilter.value.period === 'Week'" class="col">
+                    <div class="mx-auto" style="background-color: #2B3038; margin-top: 1rem; margin-bottom: 1rem; width: 233px; border-radius: 5px;">
+                        <ngb-datepicker name="week" ngModel [firstDayOfWeek]="5" required></ngb-datepicker>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </fieldset>
+        <!-- <div class="col">
+            <span *ngIf="dateFilter.value.week != null && dateFilter.value.period == 'Week'">A period of {{ dateFilter.value.period }} and a release week ending on {{ dateFilter.value.week.year }}-{{ dateFilter.value.week.month }}-{{ dateFilter.value.week.day }}</span>
+            <span *ngIf="dateFilter.value.month != '' && dateFilter.value.period == 'Month'">A period of {{ dateFilter.value.period }} and the month of {{ dateFilter.value.year }}-{{ dateFilter.value.month }}</span>
+            <span *ngIf="dateFilter.value.quarter != '' && dateFilter.value.period == 'Quarter'">A period of {{ dateFilter.value.period }} and the quarter of {{ dateFilter.value.quarter }}</span>
+            <span *ngIf="dateFilter.value.year != '' && dateFilter.value.period == 'Year'">A period of {{ dateFilter.value.period }} and the year of {{ dateFilter.value.year }}</span>
+        </div> -->
+        <div *ngIf="dateFilter.value.week != ''" class="col text-right" style="position: absolute; bottom: -3.25rem; right: 0.5rem;">
+            <button type="submit" class="btn umg__button--submit">Apply</button>
+            <div *ngFor='let x of dateForm'>{{ x.dateYear }}</div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,387 @@
+<div *ngIf="!ready" class="col-12 loading">
+	<loader></loader>
+</div>
+<div *ngIf="ready" id="detail-page__container" class="container-fluid">
+	<div class="details__entity">
+		<div class="row hidden-sm-up">
+			<div class="details__img col-5">
+				<img class="img-responsive" src="{{ newTrackInfo.image }}">
+			</div>
+			<div class="col-7">
+				<div class="details__title">Track</div>
+				<div class="details__name-title">{{ newTrackInfo.name }}</div>
+				<div class="details__name-title--sub thin">{{ newTrackInfo.artist?.name }}</div>
+			</div>
+		</div>
+		<div class="row hidden-sm-down">
+			<div class="col-1 hidden-sm-down"></div>
+			<div class="details__img col-2">
+				<img class="img-responsive" src="{{ newTrackInfo.image }}">
+			</div>
+			<div class="col-3">
+				<div class="row">
+					<div class="col-12 push-1">
+						<span class="details__title">Track</span></div>
+					<div class="details__name-title col-9 push-1">
+						{{ newTrackInfo.name }}
+					</div>
+					<div class="details__name-title--sub col-9 push-1 thin">
+						{{ newTrackInfo.artist?.name }}
+					</div>
+					<!-- <div id="details__add-to-list" class="col-3">
+						<div ngbDropdown class="d-inline-block" [open]="false">
+							<button class="details__add-to-list--btn" ngbDropdownToggle><i class="fa fa-list-ul" aria-hidden="true"></i></button>
+							<div id="details__add-to-list--menu" class="dropdown-menu details__addlist dropdown-menu-left" aria-labelledby="details__addlist" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
+								<div class="row">
+									<div class="col-12">
+										<h4 class="brand-color">Add to list...</h4>
+									</div>
+									<div class="col-12 list__add--items-group">
+										<div *ngFor="let list of lists">
+											<div (click)="addToList(list.listName)" class="list__add--item col-xs-12" style="margin:0;">{{list.listName}}</div>
+										</div>
+									</div>
+									<div class="col-12 shadow-top">
+										<form class="listForm" (ngSubmit)="createList(createListGroup)" [formGroup]="createListGroup">
+											<input #addInput class="list__add--input col-9" type="text" formControlName="listName" placeholder="Create new list ..." (click)="$event.stopPropagation();" (input)="$event.target.value">
+											<button class="btn rt-btn list__add--btn col-3" type="submit" (click)="addInput.value=''"><i class="fa fa-plus" aria-hidden="true"></i></button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+				</div>
+			</div>
+			<div class="overview__table col-5">
+				<ngb-tabset>
+					<ngb-tab title="Overview">
+						<template ngbTabContent>
+                      <table>
+                        <template ngFor let-item [ngForOf]="trackOverview" let-i="index" [ngForTrackBy]="trackByFn">
+                          <tr>
+                              <th>TP Consump.</th>
+                              <td>{{ item.adjustedTpUnits | number : '1.0-0' }}</td>
+                          </tr>
+                          <tr>
+                              <th>RTD Consump.</th>
+                              <td>{{ item.adjustedRtdUnits | number : '1.0-0' }}</td>
+                          </tr>
+                          <tr *ngIf="userData.revenue">
+                              <th>TP Euros</th>
+                              <td>&#8364; {{ item.tpEuro | number : '1.0-0' }}</td>
+                          </tr>
+                          <tr *ngIf="userData.revenue">
+                              <th>RTD Euros</th>
+                              <td>&#8364; {{ item.rtdEuro | number : '1.0-0' }}</td>
+                          </tr>
+                          <tr>
+                              <th>TP Streams</th>
+                              <td>{{ item.tpStreams | number : '1.0-0' }}</td>
+                          </tr>
+                          <tr>
+                              <th>RTD Streams</th>
+                              <td>{{ item.rtdStreams | number : '1.0-0' }}</td>
+                          </tr>
+                        </template>
+						</table>
+						</template>
+					</ngb-tab>
+					<ngb-tab>
+						<template ngbTabTitle>Streaming</template>
+						<template ngbTabContent>
+                      <table>
+                          <tbody>
+                              <tr *ngFor="let item of partnersStreams; let i = index">
+                                  <td class="light-white">{{ item.partnerName }}</td>
+                                  <td>{{ item.tpStreams | number : '1.0-0' }}</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                    </template>
+					</ngb-tab>
+					<ngb-tab>
+						<template ngbTabTitle><span class="hidden-sm-down">Digital Tracks</span><span class="hidden-md-up">Tracks</span></template>
+						<template ngbTabContent>
+                      <table>
+                        <tr *ngFor="let item of partnersDigitalTracks; let i = index">
+                            <td class="light-white">{{ item.partnerName }}</td>
+                            <td>{{ item.tpDigitalTracks | number : '1.0-0' }}</td>
+                        </tr>
+                      </table>
+                    </template>
+					</ngb-tab>
+				</ngb-tabset>
+			</div>
+			<div class="col-1"></div>
+		</div>
+	</div>
+	<div class="hidden-sm-down details__line-chart">
+		<div class="row">
+			<div class="col-sm-10 mx-auto">
+				<h2><span class="details__title">{{ newTrackInfo.name }}</span> Consumption</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 col-lg-10 mx-auto">
+				<ngb-tabset>
+					<ngb-tab title='Overview'>
+						<template ngbTabContent>
+                          <track-detail-line-chart-overview class="hidden-sm-down"></track-detail-line-chart-overview>
+                      </template>
+					</ngb-tab>
+					<ngb-tab>
+						<template ngbTabTitle>Streams by Partner</template>
+						<template ngbTabContent>
+              <track-detail-line-chart-partners class="hidden-sm-down"></track-detail-line-chart-partners>
+                      </template>
+					</ngb-tab>
+				</ngb-tabset>
+			</div>
+		</div>
+	</div>
+	<div class="table--container">
+		<div class="row mx-auto margin-bottom-half">
+			<div class="hidden-md-down col-1"></div>
+			<div class="col-10 mobile-no-padding">
+				<h2><span class="details__title">{{ newTrackInfo.name }}</span> Breakdown</h2>
+			</div>
+			<div class="hidden-md-down col-1"></div>
+		</div>
+		<div class="col-md-12 col-lg-10 mx-auto">
+			<div class="row mx-auto">
+				<div class="col-6 no-padding">
+					<h4 class="tracks__table-heading">Partners<span class="hidden-sm-down">Overview and Partners</span></h4>
+				</div>
+				<div class="col-5 no-padding">
+					<div class="no-padding text-right"><button type="button" class="umg__button btn" (click)="toggleAll()"><span *ngIf="!showRow">Expand</span><span *ngIf="showRow">Collapse</span><span class="hidden-sm-down"> All</span></button></div>
+				</div>
+				<div class="col-1 no-padding text-right hidden-sm-up">
+					<div ngbDropdown class="hidden-sm-up d-inline-block" [open]="false">
+							<button id="listOptions" class="mobile__more-btn" ngbDropdownToggle><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="listOptions">
+									<div>
+											<div class="dropdown-item" (click)="exportService.download(trackService.artistName + ' - ' + trackService.trackName + ' - ' + 'TrackPartnerData', exportService.trackPartnerData, exportService.csvTrackPartnerData)">Export Partners<i class="fa fa-sign-out" aria-hidden="true"></i></div>
+									</div>
+							</div>
+					</div>
+				</div>
+				<div class="col-1 no-padding hidden-sm-down">
+					<div class="no-padding text-right hidden-sm-down"><button type="button" class="umg__button btn" (click)="exportService.download(trackService.artistName + ' - ' + trackService.trackName + ' - ' + 'TrackPartnerData', exportService.trackPartnerData, exportService.csvTrackPartnerData)">Export<i class="fa fa-sign-out" aria-hidden="true" style="padding-left: 10px;"></i></button></div>
+				</div>
+			</div>
+			<table id="details__table--tracks" class="umg__table umg__table--no-padding umg__table--tracks">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>partners</th>
+						<th>rtd</th>
+						<th>tp</th>
+						<th>var</th>
+						<th>track sales</th>
+						<th>streams total</th>
+						<th>audio streams</th>
+						<th>video streams</th>
+					</tr>
+				</thead>
+				<tbody>
+					<template ngFor let-item [ngForOf]="flattenedPartners" let-i="index" [ngForTrackBy]="trackByFn">
+                      <tr>
+                      <td>{{ i + 1 }}</td>
+                      <td (click)="toggleRow(i, item.partner.name)" unselectable="on">
+												<div *ngIf="item.partner"><i *ngIf="showRow != true && partner != item.partner.name" class="fa fa-caret-right" aria-hidden="true"></i>
+													<i *ngIf="showRow || partner === item.partner.name" class="fa fa-caret-down" aria-hidden="true"></i>{{ item.partner.name }}
+												</div>
+												<div *ngIf="!item.partner">&mdash;</div>
+											</td>
+											<td><div *ngIf="item.adjustedRtdUnits">{{ item.adjustedRtdUnits.all | number : '1.0-0' }}</div><div *ngIf="!item.adjustedRtdUnits">&mdash;</div></td>
+                      <td><div *ngIf="item.adjustedTotalUnits">{{ item.adjustedTotalUnits.all | number : '1.0-0' }}</div><div *ngIf="!item.adjustedTotalUnits">&mdash;</div></td>
+                      <td>
+                          <div *ngIf="item.adjustedPreviousUnits && item.adjustedTotalUnits" ngbTooltip="LP: {{ item.adjustedPreviousUnits.all | number : '1.0-0' }}">
+                              <span *ngIf="item.adjustedTotalUnits.all > item.adjustedPreviousUnits.all" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.adjustedTotalUnits.all - item.adjustedPreviousUnits.all) / (item.adjustedPreviousUnits.all)) * 100 | number : '1.1-1' }}%</span>
+                              <span *ngIf="item.adjustedTotalUnits.all < item.adjustedPreviousUnits.all" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.adjustedTotalUnits.all - item.adjustedPreviousUnits.all) / (item.adjustedPreviousUnits.all)) * 100 | number : '1.1-1' }}%</span>
+                              <span *ngIf="item.adjustedTotalUnits.all === item.adjustedPreviousUnits.all" class="no-wrap"></span>
+                          </div>
+                          <div *ngIf="!item.adjustedPreviousUnits || !item.adjustedTotalUnits">&mdash;</div>
+                      </td>
+                      <td><div *ngIf="item.totalUnits">{{ item.totalUnits.digitalTracks | number : '1.0-0' }}</div><div *ngIf="!item.totalUnits">&mdash;</div></td>
+                      <td><div *ngIf="item.totalUnits">{{ item.totalUnits.streams | number : '1.0-0' }}</div><div *ngIf="!item.totalUnits">&mdash;</div></td>
+                      <td><div *ngIf="item.totalUnits">{{ item.totalUnits.audioStreams | number : '1.0-0' }}</div><div *ngIf="!item.totalUnits">&mdash;</div></td>
+                      <td><div *ngIf="item.totalUnits">{{ item.totalUnits.videoStreams | number : '1.0-0' }}</div><div *ngIf="!item.totalUnits">&mdash;</div></td>
+                    </tr>
+                    <tr class="expanded-row" *ngIf="showRow || partner === item.partner.name"> <!--*ngFor="let subItem of item['subscriptionType']"-->
+											<td></td>
+											<td>Free</td>
+											<td><div *ngIf="item.freeAdjustedRtdUnits">{{ item.freeAdjustedRtdUnits.all | number : '1.0-0' }}</div><div *ngIf="!item.freeAdjustedRtdUnits">&mdash;</div></td>
+											<td><div *ngIf="item.freeAdjustedTotalUnits">{{ item.freeAdjustedTotalUnits.all | number : '1.0-0' }}</div><div *ngIf="!item.freeAdjustedTotalUnits">&mdash;</div></td>
+											<td>
+													<div *ngIf="item.freeAdjustedPreviousUnits && item.freeAdjustedTotalUnits" ngbTooltip="LP: {{ item.freeAdjustedPreviousUnits.all | number : '1.0-0' }}">
+															<span *ngIf="item.freeAdjustedTotalUnits.all > item.freeAdjustedPreviousUnits.all" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.freeAdjustedTotalUnits.all - item.freeAdjustedPreviousUnits.all) / (item.freeAdjustedPreviousUnits.all)) * 100 | number : '1.1-1' }}%</span>
+															<span *ngIf="item.freeAdjustedTotalUnits.all < item.freeAdjustedPreviousUnits.all" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.freeAdjustedTotalUnits.all - item.freeAdjustedPreviousUnits.all) / (item.freeAdjustedPreviousUnits.all)) * 100 | number : '1.1-1' }}%</span>
+															<span *ngIf="item.freeAdjustedTotalUnits.all === item.freeAdjustedPreviousUnits.all" class="no-wrap"></span>
+													</div>
+													<div *ngIf="!item.freeAdjustedPreviousUnits || !item.freeAdjustedTotalUnits">&mdash;</div>
+											</td>
+											<td><div *ngIf="item.freeTotalUnits">{{ item.freeTotalUnits.digitalTracks | number : '1.0-0' }}</div><div *ngIf="!item.freeTotalUnits">&mdash;</div></td>
+                      <td><div *ngIf="item.freeTotalUnits">{{ item.freeTotalUnits.streams | number : '1.0-0' }}</div><div *ngIf="!item.freeTotalUnits">&mdash;</div></td>
+                      <td><div *ngIf="item.freeTotalUnits">{{ item.freeTotalUnits.audioStreams | number : '1.0-0' }}</div><div *ngIf="!item.freeTotalUnits">&mdash;</div></td>
+                      <td><div *ngIf="item.freeTotalUnits">{{ item.freeTotalUnits.videoStreams | number : '1.0-0' }}</div><div *ngIf="!item.freeTotalUnits">&mdash;</div></td>
+                    </tr>
+										<tr class="expanded-row"  *ngIf="showRow || partner === item.partner.name"> <!--*ngFor="let subItem of item['subscriptionType']"-->
+											<td></td>
+											<td>Paid</td>
+											<td><div *ngIf="item.paidAdjustedRtdUnits">{{ item.paidAdjustedRtdUnits.all | number : '1.0-0' }}</div><div *ngIf="!item.paidAdjustedRtdUnits">&mdash;</div></td>
+											<td><div *ngIf="item.paidAdjustedTotalUnits">{{ item.paidAdjustedTotalUnits.all | number : '1.0-0' }}</div><div *ngIf="!item.paidAdjustedTotalUnits">&mdash;</div></td>
+											<td>
+													<div *ngIf="item.paidAdjustedPreviousUnits && item.paidAdjustedTotalUnits" ngbTooltip="LP: {{ item.paidAdjustedPreviousUnits.all | number : '1.0-0' }}">
+															<span *ngIf="item.paidAdjustedTotalUnits.all > item.paidAdjustedPreviousUnits.all" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.paidAdjustedTotalUnits.all - item.paidAdjustedPreviousUnits.all) / (item.paidAdjustedPreviousUnits.all)) * 100 | number : '1.1-1' }}%</span>
+															<span *ngIf="item.paidAdjustedTotalUnits.all < item.paidAdjustedPreviousUnits.all" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.paidAdjustedTotalUnits.all - item.paidAdjustedPreviousUnits.all) / (item.paidAdjustedPreviousUnits.all)) * 100 | number : '1.1-1' }}%</span>
+															<span *ngIf="item.paidAdjustedTotalUnits.all === item.paidAdjustedPreviousUnits.all" class="no-wrap"></span>
+													</div>
+													<div *ngIf="!item.paidAdjustedPreviousUnits || !item.paidAdjustedTotalUnits">&mdash;</div>
+											</td>
+											<td><div *ngIf="item.paidTotalUnits">{{ item.paidTotalUnits.digitalTracks | number : '1.0-0' }}</div><div *ngIf="!item.paidTotalUnits">&mdash;</div></td>
+                      <td><div *ngIf="item.paidTotalUnits">{{ item.paidTotalUnits.streams | number : '1.0-0' }}</div><div *ngIf="!item.paidTotalUnits">&mdash;</div></td>
+                      <td><div *ngIf="item.paidTotalUnits">{{ item.paidTotalUnits.audioStreams | number : '1.0-0' }}</div><div *ngIf="!item.paidTotalUnits">&mdash;</div></td>
+                      <td><div *ngIf="item.paidTotalUnits">{{ item.paidTotalUnits.videoStreams | number : '1.0-0' }}</div><div *ngIf="!item.paidTotalUnits">&mdash;</div></td>
+                    </tr>
+                  </template>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-12 col-lg-10 mx-auto margin-top-2">
+			<div class="row mx-auto">
+				<div class="col-6 no-padding">
+					<h4 class="tracks__table-heading">Related ISRC's</h4>
+				</div>
+				<div class="col-6 no-padding hidden-sm-down">
+					<div class="no-padding text-right"><button type="button" class="umg__button btn" (click)="exportService.download(trackService.artistName + ' - ' + trackService.trackName + ' - ' + 'TrackRelatedISRC', exportService.trackRelatedTracks, exportService.csvTrackRelatedTracks)">Export<i class="fa fa-sign-out" aria-hidden="true" style="padding-left: 10px;"></i></button></div>
+				</div>
+				<div class="col-6 no-padding text-right hidden-sm-up">
+					<div ngbDropdown class="hidden-sm-up d-inline-block" [open]="false">
+							<button id="listOptions" class="mobile__more-btn" ngbDropdownToggle><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="listOptions">
+									<div>
+											<div class="dropdown-item" (click)="exportService.download(trackService.artistName + ' - ' + trackService.trackName + ' - ' + 'TrackRelatedISRC', exportService.trackRelatedTracks, exportService.csvTrackRelatedTracks)">Export ISRC's<i class="fa fa-sign-out" aria-hidden="true"></i></div>
+									</div>
+							</div>
+					</div>
+				</div>
+			</div>
+			<table class="umg__table umg__table--tracks">
+				<thead>
+					<tr *ngFor="let x of globals.trackTableHeaders">
+						<th>{{ x.number }}</th>
+						<th>Version Title</th>
+						<th>ISRC</th>
+						<th>{{ x.releaseDate }}</th>
+						<th>{{ x.releaseToDate }}</th>
+						<th>{{ x.thisPeriod }}</th>
+						<th>{{ x.variance }}</th>
+						<th>{{ x.trackSales }}</th>
+						<th>{{ x.streamsTotal }}</th>
+						<th>{{ x.audioStreams }}</th>
+						<th>{{ x.videoStreams }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<template ngFor let-isrc [ngForOf]="trackRelatedTracks" let-i="index" [ngForTrackBy]="trackByFn">
+                    <tr *ngIf="isrc.isrcName">
+                        <td>{{ i + 1 }}</td>
+                        <td><div *ngIf="isrc.isrcName">{{ isrc.isrcVersionName || isrc.isrcName}}</div><div *ngIf="!isrc.isrcName">&mdash;</div></td>
+                        <td><div *ngIf="isrc.isrcId">{{ isrc.isrcId }}</div><div *ngIf="!isrc.isrcId">&mdash;</div></td>
+                        <td><div *ngIf="isrc.isrcReleaseDate">{{ isrc.isrcReleaseDate | date:'yyyy-MM-dd' }}</div><div *ngIf="!isrc.isrcReleaseDate">&mdash;</div></td>
+                        <td><div *ngIf="isrc.adjustedRtdUnits">{{ isrc.adjustedRtdUnits | number : '1.0-0' }}</div><div *ngIf="!isrc.adjustedRtdUnits">&mdash;</div></td>
+                        <td><div *ngIf="isrc.adjustedTotalUnits">{{ isrc.adjustedTotalUnits | number : '1.0-0' }}</div><div *ngIf="!isrc.adjustedTotalUnits">&mdash;</div></td>
+                        <td>
+                            <div *ngIf="isrc.adjustedPreviousUnits && isrc.adjustedTotalUnits" ngbTooltip="{{ globals.trackTableHeaders[0].lastPeriod }}: {{ isrc.adjustedPreviousUnits | number : '1.0-0' }}">
+                                <span *ngIf="isrc.adjustedTotalUnits > isrc.adjustedPreviousUnits" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i> {{ ((isrc.adjustedTotalUnits - isrc.adjustedPreviousUnits) / (isrc.adjustedPreviousUnits)) * 100 | number : '1.1-1' }}%</span>
+                                <span *ngIf="isrc.adjustedTotalUnits < isrc.adjustedPreviousUnits" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i> {{ ((isrc.adjustedTotalUnits - isrc.adjustedPreviousUnits) / (isrc.adjustedPreviousUnits)) * 100 | number : '1.1-1' }}%</span>
+                                <span *ngIf="isrc.adjustedTotalUnits === isrc.adjustedPreviousUnits" class="no-wrap"> --</span>
+                            </div>
+                            <div *ngIf="!isrc.adjustedPreviousUnits || !isrc.adjustedTotalUnits">&mdash;</div>
+                        </td>
+                        <td><div *ngIf="isrc.totalDigitalTracks">{{ isrc.totalDigitalTracks | number : '1.0-0' }}</div><div *ngIf="!isrc.totalDigitalTracks">&mdash;</div></td>
+                        <td><div *ngIf="isrc.totalStreams">{{ isrc.totalStreams | number : '1.0-0' }}</div><div *ngIf="!isrc.totalStreams">&mdash;</div></td>
+                        <td><div *ngIf="isrc.totalAudioStreams">{{ isrc.totalAudioStreams | number : '1.0-0' }}</div><div *ngIf="!isrc.totalAudioStreams">&mdash;</div></td>
+                        <td><div *ngIf="isrc.totalVideoStreams">{{ isrc.totalVideoStreams | number : '1.0-0' }}</div><div *ngIf="!isrc.totalVideoStreams">&mdash;</div></td>
+                    </tr>
+                  </template>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-12 col-lg-10 mx-auto margin-top-2">
+			<div class="row mx-auto">
+				<div class="col-6 no-padding">
+					<h4 class="tracks__table-heading">Countries</h4>
+				</div>
+				<div class="col-6 no-padding hidden-sm-down">
+					<div class="no-padding text-right"><button type="button" class="umg__button btn" (click)="exportService.download(trackService.artistName + ' - ' + trackService.trackName + ' - ' + 'TrackRelatedISRC', exportService.trackRelatedTracks, exportService.csvTrackRelatedTracks)">Export<i class="fa fa-sign-out" aria-hidden="true" style="padding-left: 10px;"></i></button></div>
+				</div>
+				<div class="col-6 no-padding text-right hidden-sm-up">
+					<div ngbDropdown class="hidden-sm-up d-inline-block" [open]="false">
+							<button id="listOptions" class="mobile__more-btn" ngbDropdownToggle><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="listOptions">
+									<div>
+											<div class="dropdown-item" (click)="exportService.download(trackService.artistName + ' - ' + trackService.trackName + ' - ' + 'TrackRelatedISRC', exportService.trackRelatedTracks, exportService.csvTrackRelatedTracks)">Export ISRC's<i class="fa fa-sign-out" aria-hidden="true"></i></div>
+									</div>
+							</div>
+					</div>
+				</div>
+			</div>
+                            <div id="top-regions">
+                            	<div class="row mx-auto">
+                            		<div class="col-5">
+                            		<track-detail-pie-chart class="hidden-sm-down"></track-detail-pie-chart>
+                            	</div>
+                            	<div class="col-6 top-regions__chart--bar">
+                            		<track-detail-bar-chart class="hidden-sm-down"></track-detail-bar-chart>
+                            	</div>
+                            	<div class="col-1">
+                            	</div>
+                            </div>
+                            <div class="row mx-auto">
+                              <div class="col no-padding text-right chart-btn hidden-sm-down"><button type="button" class="umg__button btn" (click)="exportService.download(trackService.artistName + ' - ' + trackService.trackName + ' - ' + 'TrackCountries', exportService.trackCountries, exportService.csvTrackCountries)">Export Table<i class="fa fa-sign-out" aria-hidden="true" style="padding-left: 10px;"></i></button></div>
+                            	<div class="col-12 top-regions__table">
+                            		<table class="umg__table">
+                            			<thead>
+                            				<tr>
+                            					<th>#</th>
+                            					<th>country</th>
+                            					<th>rtd</th>
+                            					<th>tp</th>
+                            					<th>var</th>
+                            					<th>digital tracks</th>
+                            					<th>total streams</th>
+                            					<th>audio streams</th>
+                            					<th>video streams</th>
+                            				</tr>
+                            			</thead>
+                            			<tbody>
+                            				<tr *ngFor="let item of trackCountries; let i = index;">
+                            					<td>{{ i + 1 }}</td>
+                            					<td><div *ngIf="item.territory">{{ item.territory.name }}</div><div *ngIf="!item.territory">&mdash;</div></td>
+                                      <td><div *ngIf="item.adjustedRtdUnits">{{ item.adjustedRtdUnits.all | number : '1.0-0' }}</div><div *ngIf="!item.adjustedRtdUnits">&mdash;</div></td>
+                            					<td><div *ngIf="item.adjustedTotalUnits">{{ item.adjustedTotalUnits.all | number : '1.0-0' }}</div><div *ngIf="!item.adjustedTotalUnits">&mdash;</div></td>
+                                      <td>
+                                          <div *ngIf="item.adjustedPreviousUnits && item.adjustedTotalUnits" ngbTooltip="LP: {{ item.adjustedPreviousUnits.all | number : '1.0-0' }}">
+                                              <span *ngIf="item.adjustedTotalUnits.all > item.adjustedPreviousUnits.all" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.adjustedTotalUnits.all - item.adjustedPreviousUnits.all) / (item.adjustedPreviousUnits.all)) * 100 | number : '1.1-1' }}%</span>
+                                              <span *ngIf="item.adjustedTotalUnits.all < item.adjustedPreviousUnits.all" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.adjustedTotalUnits.all - item.adjustedPreviousUnits.all) / (item.adjustedPreviousUnits.all)) * 100 | number : '1.1-1' }}%</span>
+                                              <span *ngIf="item.adjustedTotalUnits.all === item.adjustedPreviousUnits.all" class="no-wrap"></span>
+                                          </div>
+                                          <div *ngIf="!item.adjustedPreviousUnits || !item.adjustedTotalUnits">&mdash;</div>
+                                      </td>
+                            					<td><div *ngIf="item.totalUnits">{{ item.totalUnits.digitalTracks | number : '1.0-0' }}</div><div *ngIf="!item.totalUnits">&mdash;</div></td>
+                            					<td><div *ngIf="item.totalUnits">{{ item.totalUnits.streams | number : '1.0-0' }}</div><div *ngIf="!item.totalUnits">&mdash;</div></td>
+                            					<td><div *ngIf="item.totalUnits">{{ item.totalUnits.audioStreams | number : '1.0-0' }}</div><div *ngIf="!item.totalUnits">&mdash;</div></td>
+                            					<td><div *ngIf="item.totalUnits">{{ item.totalUnits.videoStreams | number : '1.0-0' }}</div><div *ngIf="!item.totalUnits">&mdash;</div></td>
+                            				</tr>
+                            			</tbody>
+                            		</table>
+                            	</div>
+                            </div>
+                            <div class="data-disclaimer col">** <strong>RTD Units, TP Units:</strong> Adjusted album ratios. <strong>Media Type Units:</strong> Raw numbers. <strong>Pie Chart Units:</strong> Adjusted album ratios.</div>
+                            </div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,153 @@
+@import 'variables'
+
+//Active
+
+.mobile__more-btn
+  padding: 0 0.5rem 0 0.5rem
+  font-size: 1.25rem
+  background: #22252B
+  border: 1px solid #30343d !important
+  border: 0
+  font-weight: 100
+  color: #fff
+
+.umg__button--submit
+  background-color: #60b9ef
+  color: #1a1a1a
+  font-weight: 100
+
+.umg__button--cancel
+  background-color: #495059
+  color: #b3b3b3
+  font-weight: 100
+
+//Going label this as important for now, remember to remove later.
+.open>.dropdown-toggle.btn-primary
+  background-color: transparent !important
+  border-color: #FFF !important
+
+.list__buttons
+  .fa
+    padding-left: 0.5rem
+
+.umg__button
+  padding: 0.5rem 1.15rem
+  margin: .25rem
+  border: 1px solid #363B45
+  background-color: #22252B
+  border-radius: 4px
+  color: #B3B3B3
+  font-weight: 100
+  vertical-align: middle
+
+  &:hover,
+  &:focus,
+  &:active
+    background-color: transparent
+    border: 1px solid $brandColor
+    color: #ffffff
+  @media(max-width:768px)
+    padding: 0.66rem
+    line-height: 0.25rem
+    text-align: left
+    font-size: 0.95rem
+    margin: 0
+
+.umg__button--lists
+  padding: 0.5rem 1.15rem
+  border: 1px solid #363B45
+  background-color: #22252B
+  border-radius: 0.25rem
+  color: #B3B3B3
+  font-weight: 100
+  &:hover,
+  &:focus,
+  &:active
+    background-color: transparent
+    border-color: $brandColor
+    color: #ffffff
+
+//Disabled Button
+.button--disabled
+    background-color: #1c1f23
+    outline: none
+    color: #B3B3B3
+    &:focus
+      border: 1px solid #363B45
+
+.btn-group:last-child>.btn
+	margin-right: 0 !important
+
+.button--recent-list
+  background-color: #191C1F
+  padding: 1.3rem
+  border: 1px solid $brandColor
+  border-radius: 5px
+  margin: 1em
+  font-size: 1.15em
+  font-weight: 300
+  text-align: center
+  a
+    padding: 1.3em
+    transition: .2s
+  &:hover
+    background-color: $brandColor
+    cursor: pointer
+    font-weight: 300
+
+input.lt-text,
+.lt-btn
+  border-radius: 4px 0 0 4px !important
+input.rt-text, .rt-btn
+  border-radius: 0 4px 4px 0 !important
+  padding: .6rem 1rem
+  vertical-align: top
+  margin-left: -4px
+  background-color: #60B9EF
+  color: #0A0A0A
+
+.btn
+  .focus
+    box-shadow: none !important
+    border: 1px solid #60B9EF !important
+  &:focus
+    box-shadow: none !important
+    border: 1px solid #60B9EF !important
+
+#toggle--button
+  input[type=checkbox]
+  	height: 0
+  	width: 0
+  	visibility: hidden
+
+  label
+    margin-top: -0.75rem
+    cursor: pointer
+    text-indent: -9999px
+    width: 50px
+    height: 25px
+    background: #191c1f
+    display: block
+    border-radius: 100px
+    position: relative
+
+  label:after
+  	content: ''
+  	position: absolute
+  	top: 1.25px
+  	left: 1px
+  	width: 22.25px
+  	height: 22.25px
+  	background: #fff
+  	border-radius: 90px
+  	transition: 0.3s
+
+  input:checked + label
+  	background: $brandColor
+
+  input:checked + label:after
+  	left: calc(97%)
+  	transform: translateX(-100%)
+
+  label:active:after
+  	width: 22.25px

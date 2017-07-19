@@ -1,0 +1,36 @@
+<header-nav class="header"></header-nav>
+<div class="app-content">
+	<router-outlet></router-outlet>
+</div>
+<footer *ngIf="router.url != '/login'">
+	<div class="row no-padding">
+		<div class="col footer__content">
+			<div class="row hidden-sm-up" style="font-size: 0.75rem;">
+				<div class="col-12 text-left brand-color" style="padding-bottom: 1rem;">
+					<h2 style="font-size: 1.25rem;"><i class="fa fa-headphones" aria-hidden="true"></i>&nbsp;&nbsp;<span class="thin">Swift Consumption</span></h2>
+				</div>
+				<div class="col-12" style="padding-bottom: 1rem;">
+					The Swift Consumption tool was designed with modern data and development technologies, with a focus on the future of innovation happening here at Universal Music.
+				</div>
+				<div class="col-12">
+					<div>Created with <span style="color:#FF4151;"><i class="fa fa-heart" aria-hidden="true"></i></span> from Los Angeles by the Swift Team.</div>
+					<div style="color:#60b9ef; font-weight: 300;">swift.umusic.com | swift@umusic.com</div>
+					<div>Copyright 2017. Universal Music Group. All Rights Reserved.</div>
+				</div>
+			</div>
+			<div class="row hidden-sm-down">
+				<div class="col" style="border-right: 1px solid #60b9ef; padding-right: 4rem; padding-left: 1rem;">
+					The Swift Consumption tool was designed with modern data and development technologies, with a focus on the future of innovation happening here at Universal Music.
+				</div>
+				<div class="col text-center" style="border-right: 1px solid #60b9ef; color:#60b9ef; padding-top: 1rem;">
+					<h2><i class="fa fa-headphones" aria-hidden="true"></i>&nbsp;&nbsp;<span class="thin">Swift Consumption</span></h2>
+				</div>
+				<div class="col" style="padding-left: 4rem;">
+					<div>Created with <span style="color:#FF4151;"><i class="fa fa-heart" aria-hidden="true"></i></span> from Los Angeles by the Swift Team.</div>
+					<div style="color:#60b9ef; font-weight: 300;">swift.umusic.com | swift@umusic.com</div>
+					<div style="font-size:0.75rem; padding-top: 0.5rem;">Copyright 2017. Universal Music Group. All Rights Reserved.</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>

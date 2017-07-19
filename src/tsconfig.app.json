@@ -1,0 +1,16 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"outDir": "./app",
+		"module": "es2015",
+		"baseUrl": "",
+		"types": [
+			"isomorphic-fetch"
+		]
+	},
+	"exclude": [
+		"node_modules",
+		"test.ts",
+		"**/*.spec.ts"
+	]
+}

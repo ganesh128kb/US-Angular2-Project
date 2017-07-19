@@ -1,0 +1,33 @@
+<div class="container-fluid">
+	<div class="table__container margin-top-2">
+		<div class="row text-left">
+			<div class="col-8 mx-auto">
+				<h2 class="thin">Ratios Chart: SEA and TEA by Country</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-8 mx-auto">
+				<table class="umg__table">
+					<thead>
+						<tr>
+							<th>Country</th>
+							<th>Code</th>
+							<th>Usage Group</th>
+							<th>Units to Albums</th>
+							<th>Units to Tracks Ratio</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let x of ratioData; let i = index">
+							<td>{{ x.country }}</td>
+							<td>{{ x.iso }}</td>
+							<td>{{ x.mediaType }}</td>
+							<td>{{ x.unitsAlbums }}</td>
+							<td>{{ x.unitsTracks }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

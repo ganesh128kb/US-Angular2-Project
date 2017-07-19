@@ -1,0 +1,308 @@
+@import 'variables'
+@import 'tables'
+@import 'helpers'
+
+#detail-page__container
+  max-width: 1920px
+  margin: 0 auto
+  .table__container
+    padding-top: 3rem
+  @media(max-width: 768px)
+    .table__container
+      padding-top: 1.5rem
+      h2
+        font-size: 1.5rem
+
+#details__add-to-list
+  .details__add-to-list--btn
+    font-size: 1.5rem
+    color: #ffffff
+    background-color: transparent
+    border: 0
+    box-shadow: 0
+    transition: 0.15s
+    margin-top: 0.25rem
+    &:hover, &:focus
+      color: $brandColor
+      border: 0
+      cursor: pointer
+
+#details__add-to-list--menu
+  width: 200px
+  overflow-x: hidden
+  background-color: #363b45
+  padding: 0.5rem
+  font-weight: 100
+  box-shadow: 2px 2px 3px rgba(0,0,0,0.35)
+  transition: 0.15s
+  h4
+    font-weight: 100
+    font-size: 1.5rem
+    padding: 0.5rem
+
+.chart-btn
+  margin-top: -50px !important
+
+.list__add--item
+  background: transparent
+  color: #ffffff
+  padding: 0.5rem
+  &:hover
+    cursor: pointer
+    color: $brandColor
+
+.list__add--items-group
+  overflow-x: hidden
+  max-width: 200px
+  overflow-y: auto
+  max-height: 125px
+
+.list__add--input
+  height: 2.5rem
+  background: #22252b
+  padding: 0.5rem
+  border: 0
+  font-size: 0.9rem
+  font-weight: 100
+  color: #ffffff
+  margin-top: 1rem
+  margin-bottom: 0.5rem
+  border-radius: 5px 0 0 5px
+  &:focus, &:hover
+    border: 1px solid $brandColor
+
+.list__add--btn
+  padding: 0.5rem
+  height: 2.5rem
+  margin-top: 1rem
+  &:hover
+    cursor: pointer
+
+.data-disclaimer
+  font-size: 0.85rem
+  padding: 0.5rem 0 0.5rem 0
+
+canvas
+  fill: #cccccc
+
+.filter__btn
+	padding: 1.25rem
+	width: 100%
+	background: #22252b
+	border: 1px solid #30343d
+	font-weight: 100
+	color: #fff
+	@media(min-width: 576px)
+		padding: 0.25rem 0.6rem
+	.fa
+		padding-left: 0.25rem
+	&:hover
+		border: 1px solid $brandColor
+	&:active
+		background-color: #22252b
+
+.overview__table
+  tr
+    width: 50%
+    display: inline-block
+    float: left
+    margin: 0
+    padding: 0
+
+.details__line-chart
+  background-color: #22252B
+  padding: 25px 40px 50px 25px
+
+.details__title
+  color: #60B9EF
+.details__title--two
+  margin-left: 1rem
+  display: inline-block
+  color: #60B9EF
+  white-space: nowrap
+  text-overflow: ellipsis
+  overflow: hidden
+  vertical-align: bottom
+
+.details__entity
+  padding: 40px 15px
+  padding-bottom: 25px
+  @media(max-width: 768px)
+    padding: 0
+    padding-top: 2rem
+    padding-bottom: 2rem
+
+  h3
+    margin: 5px 0
+    padding: 0
+    font-size: 1rem
+    font-weight: 100
+
+.details__name-title--sub
+  font-size: 0.95rem
+  font-weight: 100
+  margin: 5px 0
+  width: 50%
+  text-overflow: ellipsis
+  white-space: nowrap
+  overflow: hidden
+
+.details__name-title
+  margin: 5px 0
+  width: 50%
+  font-size: 1.5rem
+  font-weight: 300
+  text-overflow: ellipsis
+  white-space: nowrap
+  overflow: hidden
+  @media(max-width: 768px)
+    width: 100%
+
+.unselectable
+  -webkit-user-select: none
+  -moz-user-select: none
+  user-select: none
+
+.tables__buttons
+  padding: 1rem
+  padding-right: 1.2rem
+
+.fa-sign-out, .fa-share
+  margin-left: 5px
+
+img
+  object-fit: cover
+  height: 250px
+  width: 250px
+  box-shadow: 2px 2px 3px rgba(0,0,0,0.2)
+  @media(max-width: 920px)
+    height: 125px
+    width: 125px
+
+.expanded-row
+  td
+    border: 0
+    padding-top: 0.75rem !important
+    padding-bottom: 0.75rem !important
+    color: #b7b7b7
+
+#partners
+  background-color: #22252B
+  color: #CCCCCC
+  margin: 0
+  padding: 1rem 1rem 2rem 1.25rem
+  border: 1px solid #363B45
+  font-weight: 300
+  .umg__button
+    margin-right: 1.5rem
+  h4
+    font-weight: 500
+    font-weight: 300
+    color: #fff
+    font-size: 1.25rem
+    text-align: left
+    line-height: 2.25
+  .partners__table
+    padding: 0 1rem 0 1rem
+    @media(max-width: 767px)
+      padding: 0
+    td, th
+      border: 1px solid #282c33
+    th
+      background-color: #22252B
+      border: 1px solid #22252B
+      @media(max-width: 767px)
+        padding: 0.5rem
+    th:first-child
+      background-color: #22252B
+      border-bottom: 0
+      text-align: left
+      @media(max-width: 767px)
+        padding-left: 0
+      &:hover
+        background-color: #22252B !important
+    th
+      border-top: 0
+    thead
+      tr
+        &:hover
+          background-color: #2b3038 !important
+    tr
+      td:first-child
+        width: 18%
+        background-color: #22252B !important
+        text-align: left
+        border: 1px solid #22252B
+        padding-left: 1.5rem !important
+        @media(max-width: 767px)
+          padding-left: 0 !important
+      td
+        padding: 0.5rem !important
+        padding-left: 0.85rem !important
+    tr
+      &:hover
+        background-color: $brandColor !important
+        color: #22252b
+        td:first-child
+          background-color: $brandColor !important
+
+.umg__table--tracks
+  margin-bottom: 0.5rem
+
+.tracks__table-heading
+  color: #b3b3b3
+  font-weight: 100
+  font-size: 1.5rem
+  padding-top: 1rem
+  @media(max-width: 768px)
+    font-weight: 300
+    font-size: 1.15rem
+    padding-top: 0.4rem
+    padding-bottom: 0.5rem
+
+#top-regions
+  background-color: #22252B
+  color: #CCCCCC
+  margin: 0
+  padding: 2rem 1rem 2rem 1rem
+  border: 1px solid #363B45
+  .top-regions__table
+    padding: 0
+    margin-top: 1.5rem
+    width: 100%
+  bar-chart, pie-chart, track-detail-bar-chart, track-detail-pie-chart, project-detail-bar-chart, project-detail-pie-chart
+    fill: #ccc
+  .top-regions__chart--label-two
+    font-weight: 100
+    margin-bottom: 0.75rem
+    margin-left: 0
+  .top-regions__chart--label
+    font-weight: 100
+    margin-bottom: 3rem
+    margin-left: 1.75rem
+  .top-regions__chart--bar
+    margin-left: 2.5rem
+
+#wrapper
+  max-width: 65px
+  height: auto
+  max-height: 50px
+
+.ngx-charts-outer
+  margin: 0 !important
+
+.dropdown-item
+	padding: 0.5rem 0.5rem 0.5rem 0.5rem
+	background-color: #363b45
+	color: #ffffff
+	font-weight: 300
+	&:hover
+		background-color: $brandColor
+		color: #22252b
+		cursor: pointer
+
+.dropdown-menu
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.15)
+  padding: 0
+  border-radius: 0
+  width: 100px

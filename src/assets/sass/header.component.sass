@@ -1,0 +1,294 @@
+@import 'variables'
+
+.chart-loading__search
+  text-align: center
+  font-size: 0.25rem
+  margin: 0 auto
+  padding: 2rem
+  width: 100%
+  background-color: rgba(54,59,69,0.95)
+
+.chart-loading__search svg
+  width: 50px
+  height: 50px
+  display: inline-block
+
+//--------------Dropdown Nav--------------
+
+.menu__btn
+  background: transparent
+  color: #ffffff
+  border: 0
+
+.mobile__logo
+  @media(max-width: 768px)
+    padding: 1rem 0.5rem
+    text-align: center
+
+.dropdown-nav
+  display: block
+  float: left
+  padding: 0.5rem 0 0.5rem 0
+  background-color: #16181C
+  border-top: 1px solid #393e49
+  border-bottom: 1px solid #393e49
+  .dropdown--collapse
+    background: none
+  @media(min-width: 1295px)
+    display: none
+  .nav
+    text-align: center
+    @media(max-width: 959px)
+      display: block
+  .nav-item
+    &:hover
+      background-color: $brandColor
+      color: #ffffff
+    @media(min-width: 960px)
+      flex: 0 0 19.666667%
+      max-width: 19.666667%
+
+//--------------END Dropdown Nav--------------
+
+.header__logo
+  color: #6bd1ff
+  background-color: transparent
+  border: 0
+  @media(min-width: $col-m-min)
+    margin: 2rem 0
+    padding-left: 1rem
+    padding-right: 0
+  h2
+    font-size: 1.3rem
+    margin: 0
+
+.header__nav
+  ul
+    margin: 2rem 0 0 0
+  .nav-item
+    float: left
+    a
+      padding: 0 1.25rem 2rem 1.25rem
+      display: block
+      color: #ffffff
+      @media(max-width: 950px)
+        padding: 0.5rem 0.75rem
+      &:hover
+        border-bottom: 5px solid #A6D9E8
+        cursor: pointer
+      &:focus
+        color: #ffffff
+        background: transparent
+  .active
+    color: #ffffff
+    background: transparent
+    border-bottom: 5px solid #60b9ef !important
+    font-weight: 500
+    a
+      &:hover
+        border-bottom: 0px solid #000000
+
+.header__nav
+  .nav-item
+    @media(max-width: 959px)
+      a
+        &:hover, &:focus
+          border: none
+          background-color: $brandColor
+          color: #252930
+          cursor: pointer
+  .active
+    @media(max-width: 959px)
+      background-color: $brandColor
+      border: none
+      color: #252930 !important
+      .nav-link
+        color: #252930 !important
+
+.header__nav--main
+  display: none
+  @media(min-width: 1295px)
+    display: block
+
+.header__filter--button
+  padding: 0.46rem 1rem
+  margin-right: 3.5%
+  width: 6rem
+  @media(max-width: 959px)
+    padding: 0.7rem
+    text-align: center
+
+.header__search
+  margin: 1.35rem 0
+  text-align: right
+
+#header__searchForm
+  display: inline-block
+  width: 100%
+  margin-right: 3.5%
+		//margin-right: 2.5rem
+  max-width: 24rem
+  @media(min-width: $col-m-min) and (max-width: $col-m-max)
+    max-width: 13rem
+
+#search
+  background: #22252b
+  border: 1px solid #393e49
+  width: 100%
+  font-size: 0.95rem
+  margin-left: 10px
+  margin-right: 10px
+  border-radius: 5px
+  padding: .5rem 1rem
+  color: #cdcecf
+  max-width: 24rem
+  font-weight: 100
+  margin-top: 0.25rem
+  &:focus
+    border-color: $brandColor
+    transition: .2s
+  @media(max-width: 768px)
+    margin-top: 1px
+    font-size: 0.95rem
+    width: 100%
+    margin: 0
+    margin-right: 0.85rem
+
+#search__container
+  .search__results
+    position: absolute
+    text-align: left
+    top: 2.75rem
+    right: 0
+    padding: 0
+    background-color: tranpsarent
+    z-index: 999
+    box-shadow: 2px 2px 2px rgba(25,28,31,0.5)
+    transition: .1s
+    overflow-y: scroll
+    height: auto
+    max-height: 500px
+    li
+      background-color: rgba(54,59,69,0.95)
+      &:hover
+        cursor: pointer
+        background-color: $brandColor
+      a
+        &:hover
+          color: #22252B
+          .search__title, .search__title-two
+            font-weight: 500
+          .search__title-sub
+            font-weight: 300
+        .search__title
+          padding: 10px
+        .search__title-two
+          padding: 10px 10px 0 10px
+        .search__title, .search__title-two
+          font-weight: 300
+          &:hover
+            color: #22252B
+        .search__title-sub
+          padding: 0 10px 10px 10px
+          font-size: 0.8rem
+          font-weight: 100
+          &:hover
+            color: #22252B
+
+  .search__type
+    background-color: #2B3038
+    padding: 12px 10px
+    h3
+      font-size: 1.15em
+      color: $brandColor
+      font-weight: 300
+
+//Notifcation
+.header__notif
+    background: #bc2261
+    color: #FFF
+    border: 1px solid #8e194e
+    height: 2rem
+    width: 2rem
+    text-align: center
+    border-radius: 50%
+    margin-top: 0.25rem
+
+.notfi--icon
+    padding: 0.125rem 0
+    text-align: center
+    font-style: normal
+    vertical-align: middle
+
+.header__user
+    color: #cccccc
+    border: 1px solid #64c3fc
+    border-radius: 50%
+    background-color: transparent
+    height: 2.5rem
+    width: 2.5rem
+    font-size: 1.4rem
+
+.header__clear-filters
+  text-align: left
+  background-color: $brandColor
+  color: #000000
+  padding: 0.25rem 0.5rem 0.25rem 0.5rem
+  border-radius: 1rem
+  font-weight: 300
+  font-size: 0.65rem
+  margin-right: 0.15rem
+  &:hover
+    cursor: pointer
+
+///DROPDOWN
+
+#account__menu
+  .dropdown-menu
+    margin: 1.25rem -5rem
+  .dropdown-item
+    &:hover
+      background-color: $brandColor
+
+.dropdown-menu
+  padding: 0
+  background-color: #363b45
+  border-radius: 0
+  min-width: 0
+  // margin: 0.5rem 0 0 -4rem !important
+
+.dropdown-item
+  padding: 1rem
+  color: #ffffff
+  &:hover
+    background-color: transparent
+    color: #252930
+    cursor: pointer
+
+// .account-menu
+//   top: 3rem !important
+//   .dropdown-item
+//     &:hover
+//       background-color: $brandColor
+//       color: #1a1a1a
+//       cursor: pointer
+
+.dropdown-menu-custom-logo
+  right: auto
+  left: 1rem
+  top: 4.5rem
+  width: auto
+  background-color: #363b45
+  border-radius: 0
+  padding: 1rem
+  a
+    padding-left: 1rem
+    padding-right: 1rem
+
+.swift--brand
+  color: $swiftBrandColor
+  font-size: 1.15rem
+  padding: 1.5rem
+  &:hover
+    background-color: $swiftBrandColor
+    color: #1a1a1a

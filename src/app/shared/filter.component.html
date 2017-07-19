@@ -1,0 +1,236 @@
+<div *ngIf="!ready" class="col-12 loading">
+	<loader></loader>
+</div>
+<div *ngIf="globals.isMobile">
+<div [@toggleState]="shouldToggleMobile">
+	<div [ngClass]="{'hideFilterDropdownMobile': hideFilterDropdownMobile}">
+		<div class="col-12 no-padding text-center">
+			<div *ngFor="let name of fs.activeFilters" class="filter__pill"><a (click)="removeFilter(name)"><i class="fa fa-times-circle fa-lg" aria-hidden="true"></i></a> {{name.name}}</div>
+			<div *ngIf="!fs.activeParams.date[0]" class="filter__pill">{{ defaultPeriod }} {{ defaultDate }}</div>
+			<div *ngIf="!fs.activeParams.territory[0]" class="filter__pill">{{ defaultTerritory }}</div>
+		</div>
+		<!-- <div class="text-right">
+			<div class="btn-group filter__btn--clear" [@clearAllToggle]="fs.clearAllToggle">
+				<button type="button" class="btn btn-danger filter__btn" (click)="clearAll()">Clear All</button>
+			</div>
+		</div> -->
+	</div>
+</div>
+</div>
+	<div [@toggleState]="shouldToggle" class="container filter__base" *ngIf="!globals.isMobile && router.url != '/account' && router.url != '/login' && router.url != '/docs'">
+		<!-- g DROPDOWN -->
+		<div class="filter__selectors filter__dropdown" [ngClass]="{'hideFilterDropdown': hideFilterDropdown}">
+			<div class="row">
+				<div *ngIf="fs.BStype === 'projects' && fs.BStype === 'tracks'" class="col-1">
+				</div>
+				<div *ngIf="fs.BStype === 'artists' || fs.artistInit || fs.trackInit || fs.projectInit" class="col-1">
+				</div>
+				<div class="col-2 filter__btn--container">
+					<div ngbDropdown class="d-inline-block filter__dropdown" [open]="false">
+						<button class="btn filter__btn" id="genreFilterDropdown" ngbDropdownToggle [disabled]="disabledDetailsButton()">Genres</button>
+						<div class="dropdown-menu" aria-labelledby="genreFilterDropdown">
+							<div *ngFor="let g of fs.genre; let i = index">
+								<div class="dropdown-item" [attr.data-param]="genre" (click)="addFilter('genres', fs.genre[i])">{{g.name}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-2 filter__btn--container">
+					<div class="d-inline-block filter__dropdown">
+						<ng2-completer #partnersDropdown class="completer-limit" [ngModel]="searchStr" [ngClass]="{'disabled': disabledDetailsButtonPartner()}" [disableInput]="disabledDetailsButtonPartner()" [datasource]="fs.dataServicePartners" [inputClass]="'form-control'"
+						 [openOnFocus]="true" (opened)="onOpenedPartners($event)" (selected)="addFilter('partners', $event); partnersDropdown.value = '';" [minSearchLength]="0" [placeholder]="'Partners'" [autoHighlight]="true" [fillHighlighted]="false" (focus)="openCloseFocused = true"
+						 (blur)="openCloseFocused = false">
+						</ng2-completer>
+					</div>
+					<div *ngIf="!disabledDetailsButtonPartner()" class="chevron-holder" [ngClass]="{'dropdown-open': openCloseFocused}">
+						<span class="chevron fa" [ngClass]="{'fa-chevron-down': !isOpenPartners, 'fa-chevron-up': isOpenPartners}" (click)="onTogglePartners();"></span>
+					</div>
+				</div>
+				<div class="col-2 filter__btn--container">
+					<div class="d-inline-block filter__dropdown">
+						<ng2-completer #territoriesDropdown class="completer-limit" [ngModel]="searchStr" [datasource]="fs.dataService" [inputClass]="'form-control'" [openOnFocus]="true" (opened)="onOpened($event)" (selected)="addFilter('territories', $event); territoriesDropdown.value = '';"
+						 [minSearchLength]="0" [placeholder]="'Territories'" [autoHighlight]="true" [fillHighlighted]="false" (focus)="openCloseFocused = true" (blur)="openCloseFocused = false">
+						</ng2-completer>
+					</div>
+					<div class="chevron-holder" [ngClass]="{'dropdown-open': openCloseFocused}">
+						<span class="chevron fa" [ngClass]="{'fa-chevron-down': !isOpen, 'fa-chevron-up': isOpen}" (click)="onToggle();"></span>
+					</div>
+				</div>
+				<div *ngIf="auth.userData != null && auth.userData.internal" class="col-2 filter__btn--container">
+					<div ngbDropdown class="d-inline-block filter__dropdown" [open]="false">
+						<button class="btn filter__btn" id="labelFilterDropdown" ngbDropdownToggle [disabled]="disabledLabelMenu()">Labels</button>
+						<div class="dropdown-menu" aria-labelledby="labelFilterDropdown">
+							<div *ngFor="let l of segments; let i = index">
+								<div class="dropdown-item" [attr.data-param]="label" (click)="addFilter('labels', segments[i])">{{ l.name }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="auth.userData != null && !auth.userData.internal" class="col-2 filter__btn--container">
+					<div ngbDropdown class="d-inline-block filter__dropdown" [open]="false">
+						<button class="btn filter__btn" id="labelFilterDropdown" ngbDropdownToggle [disabled]="disabledDetailsButtonPartner()">Family</button>
+						<div class="dropdown-menu" aria-labelledby="labelFilterDropdown">
+							<div *ngIf="auth.userData.externalInfo.defaultLabel">
+								<div class="dropdown-item" [attr.data-param]="label" (click)="addFilter('labels', auth.userData.externalInfo.defaultLabel)">{{ auth.userData.externalInfo.defaultLabel.label }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-2 filter__btn--container">
+					<button class="btn filter__btn" (click)="open(content)">Dates</button>
+				</div>
+				<div *ngIf="fs.bs && fs.BStype === 'projects' || fs.bs && fs.BStype === 'tracks'" class="col-2" style="margin-top: -5px;">
+					<div id="toggle--button" class="text-center">
+						<div>Catalogue</div><input type="checkbox" (click)="catalogueToggle()" id="switch" /><label style="margin-left: auto; margin-right: auto; margin-top: -20px;" for="switch"></label></div>
+				</div>
+				<div *ngIf="fs.BStype === 'projects' && fs.BStype === 'tracks'" class="col-1">
+				</div>
+			</div>
+			<div class="row">
+				<div class="filter__active col-12 no-padding text-center">
+					<div *ngFor="let name of fs.activeFilters" class="filter__pill"><a (click)="removeFilter(name)"><i class="fa fa-times-circle fa-lg" aria-hidden="true"></i></a> {{name.name}}</div>
+					<div *ngIf="!fs.activeParams.date[0]" class="filter__pill">{{ defaultPeriod }} {{ defaultDate }}</div>
+					<div *ngIf="!fs.activeParams.territory[0]" class="filter__pill">{{ defaultTerritory }}</div>
+				</div>
+				<div class="text-right">
+					<div class="btn-group filter__btn--clear" [@clearAllToggle]="fs.clearAllToggle">
+						<button type="button" class="btn btn-danger filter__btn" (click)="clearAll()">Clear All</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!------------------SHADOW FILTER------------------>
+<div *ngIf="globals.isMobile">
+<div class="filter__shadow--mobile" [@toggleState]="shouldToggleMobile" scrollbar>
+	<div class="row">
+		<div class="col-12 no-padding text-center">
+			<div *ngFor="let name of fs.activeFilters" class="filter__pill"><a (click)="removeFilter(name)"><i class="fa fa-times-circle fa-lg" aria-hidden="true"></i></a> {{name.name}}</div>
+			<div *ngIf="!fs.activeParams.date[0]" class="filter__pill">{{ defaultPeriod }} {{ defaultDate }}</div>
+			<div *ngIf="!fs.activeParams.territory[0]" class="filter__pill">{{ defaultTerritory }}</div>
+		</div>
+		<!-- <div class="text-right">
+			<div class="btn-group filter__btn--clear" [@clearAllToggle]="fs.clearAllToggle">
+				<button type="button" class="btn btn-danger filter__btn" (click)="clearAll()">Clear All</button>
+			</div>
+		</div> -->
+	</div>
+</div>
+</div>
+	<div [@toggleState]="shouldToggle" class="container filter__shadow" scrollbar>
+		<!-- g DROPDOWN -->
+		<div class="filter__selectors filter__dropdown">
+			<div *ngIf="fs.bs === false && fs.artistInit === true" class="row">
+				<div class="col margin-bottom-half margin-top-neg-half artist-name">{{ fs.artistName }}</div>
+			</div>
+			<div *ngIf="fs.bs === false && fs.trackInit === true" class="row">
+				<div class="col margin-bottom-half margin-top-neg-half artist-name">{{ fs.artistName }} - {{ fs.trackName }}</div>
+			</div>
+			<div class="row col-10 mx-auto" *ngIf="!globals.isMobile">
+				<div *ngIf="fs.BStype === 'projects' && fs.BStype === 'tracks'" class="col-1">
+				</div>
+				<div *ngIf="fs.BStype === 'artists' || fs.artistInit || fs.trackInit || fs.projectInit" class="col-1">
+				</div>
+				<div class="col-2 filter__btn--container">
+					<div ngbDropdown class="d-inline-block filter__dropdown" [open]="false">
+						<button class="btn filter__btn" id="genreFilterDropdown" ngbDropdownToggle [disabled]="disabledDetailsButton()">Genres</button>
+						<div class="dropdown-menu" aria-labelledby="genreFilterDropdown">
+							<div *ngFor="let g of fs.genre; let i = index">
+								<div class="dropdown-item" [attr.data-param]="genre" (click)="addFilter('genres', fs.genre[i])">{{g.name}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-2 filter__btn--container">
+					<div class="d-inline-block filter__dropdown">
+						<ng2-completer #partnersDropdownShadow class="completer-limit" [disableInput]="disabledDetailsButtonPartner()" [ngClass]="{'disabled': disabledDetailsButtonPartner()}" [ngModel]="searchStr" [datasource]="fs.dataServicePartners" [inputClass]="'form-control'"
+						 [openOnFocus]="true" (opened)="onOpenedPartners($event)" (selected)="addFilter('partners', $event); partnersDropdownShadow.value = '';" [minSearchLength]="0" [placeholder]="'Partners'" [autoHighlight]="true" [fillHighlighted]="false" (focus)="openCloseFocused = true"
+						 (blur)="openCloseFocused = false">
+						</ng2-completer>
+					</div>
+					<div *ngIf="!disabledDetailsButtonPartner()" class="chevron-holder" [ngClass]="{'dropdown-open': openCloseFocused}">
+						<span class="chevron fa" [ngClass]="{'fa-chevron-down': !isOpenPartners, 'fa-chevron-up': isOpenPartners}" (click)="onTogglePartnersShadow();"></span>
+					</div>
+				</div>
+				<div class="col-2 filter__btn--container">
+					<div class="d-inline-block filter__dropdown">
+						<ng2-completer #territoriesDropdownShadow class="completer-limit" [ngModel]="searchStr" [datasource]="fs.dataService" [inputClass]="'form-control'" [openOnFocus]="true" (opened)="onOpened($event)" (selected)="addFilter('territories', $event); territoriesDropdownShadow.value = '';"
+						 [minSearchLength]="0" [placeholder]="'Territories'" [autoHighlight]="true" [fillHighlighted]="false" (focus)="openCloseFocused = true" (blur)="openCloseFocused = false">
+						</ng2-completer>
+					</div>
+					<div class="chevron-holder" [ngClass]="{'dropdown-open': openCloseFocused}">
+						<span class="chevron fa" [ngClass]="{'fa-chevron-down': !isOpen, 'fa-chevron-up': isOpen}" (click)="onToggleShadow();"></span>
+					</div>
+				</div>
+				<div *ngIf="auth.userData != null && auth.userData.internal" class="col-2 filter__btn--container">
+					<div ngbDropdown class="d-inline-block filter__dropdown" [open]="false">
+						<button class="btn filter__btn" id="labelFilterDropdown" ngbDropdownToggle [disabled]="disabledLabelMenu()">Labels</button>
+						<div class="dropdown-menu" aria-labelledby="labelFilterDropdown">
+							<div *ngFor="let l of segments; let i = index">
+								<div class="dropdown-item" [attr.data-param]="label" (click)="addFilter('labels', segments[i])">{{ l.name }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="auth.userData != null && !auth.userData.internal" class="col-2 filter__btn--container">
+					<div ngbDropdown class="d-inline-block filter__dropdown" [open]="false">
+						<button class="btn filter__btn" id="labelFilterDropdown" ngbDropdownToggle [disabled]="disabledDetailsButtonPartner()">Family</button>
+						<div class="dropdown-menu" aria-labelledby="labelFilterDropdown">
+							<div *ngIf="auth.userData.externalInfo.familyLabel">
+								<div class="dropdown-item" [attr.data-param]="label" (click)="addFilter('labels', auth.userData.externalInfo.defaultLabel)">{{ auth.userData.externalInfo.defaultLabel.name }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-2 filter__btn--container">
+					<button class="btn filter__btn" (click)="open(content)">Dates</button>
+				</div>
+				<div *ngIf="fs.bs && fs.BStype === 'projects' || fs.bs && fs.BStype === 'tracks'" class="col-2" style="margin-top: -5px;">
+					<div id="toggle--button" class="text-center">
+						<div>Catalogue</div><input type="checkbox" (click)="catalogueToggle()" id="switch" [checked]="globals.catalogueToggle" /><label style="margin-left: auto; margin-right: auto; margin-top: -20px;" for="switch"></label></div>
+				</div>
+				<div *ngIf="fs.BStype === 'projects' && fs.BStype === 'tracks'" class="col-1">
+				</div>
+			</div>
+			<div class="row">
+				<div class="filter__active col-12 no-padding text-center">
+					<div *ngFor="let name of fs.activeFilters" class="filter__pill"><a (click)="removeFilter(name)"><i class="fa fa-times-circle fa-lg" aria-hidden="true"></i></a> {{name.name}}</div>
+					<div *ngIf="!fs.activeParams.date[0]" class="filter__pill">{{ defaultPeriod }} {{ defaultDate }}</div>
+					<div *ngIf="!fs.activeParams.territory[0]" class="filter__pill">{{ defaultTerritory }}</div>
+				</div>
+				<div class="text-right">
+					<div class="btn-group filter__btn--clear" [@clearAllToggle]="fs.clearAllToggle">
+						<button type="button" class="btn btn-danger filter__btn" (click)="clearAll()">Clear All</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+</div>
+<template ngbModalContainer #content let-c="close" let-d="dismiss">
+	<div class="modal-header">
+	    <h4 class="modal-title">Date Selection</h4>
+	    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+	      <span aria-hidden="true">&times;</span>
+	    </button>
+	</div>
+<filter-dates (CloseModal)="close()"></filter-dates>
+<div class="modal-footer">
+	<div class="text-left">
+    <button type="button" class="btn umg__button--cancel text-left" (click)="close()" style="position: absolute; bottom: 0.75rem; left: 1rem;">cancel</button>
+	</div>
+</div>
+</template>
+<template ngbModalContainer #mobileFilters let-c="close" let-d="dismiss">
+	<div class="modal-header">
+	    <h4 class="modal-title">Filter Select</h4>
+	    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+	      <span aria-hidden="true">&times;</span>
+	    </button>
+	</div>
+<div class="modal-footer">
+	<div class="text-left">
+    <button type="button" class="btn umg__button--cancel text-left" (click)="closeMobile()" style="position: absolute; bottom: 0.75rem; left: 1rem;">cancel</button>
+	</div>
+</div>
+</template>

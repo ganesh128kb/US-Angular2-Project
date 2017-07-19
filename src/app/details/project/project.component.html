@@ -1,0 +1,565 @@
+<div *ngIf="!ready" class="col-12 loading">
+	<loader></loader>
+</div>
+<div *ngIf="ready" id="detail-page__container" class="container-fluid">
+	<div class="details__entity">
+		<div class="row hidden-sm-up">
+			<div class="details__img col-5">
+				<img class="img-responsive" src="{{ newProjectInfo.image }}">
+			</div>
+			<div class="col-7">
+				<div class="details__title">Project</div>
+				<div class="details__name-title">{{ newProjectInfo.name }}</div>
+				<div class="details__name-title--sub thin">{{ newProjectInfo.artist?.name }}</div>
+			</div>
+		</div>
+		<div class="row hidden-sm-down">
+			<div class="col-1 hidden-sm-down"></div>
+			<div class="details__img col-2">
+				<img class="img-responsive" src="{{ newProjectInfo.image }}">
+			</div>
+			<div class="col-3">
+				<div class="row">
+					<div class="col-12 push-1">
+						<span class="details__title">Project</span>
+					</div>
+					<div class="details__name-title col-9 push-1">
+						{{ newProjectInfo.name }}
+					</div>
+					<div class="details__name-title--sub col-9 push-1 thin">
+						{{ newProjectInfo.artist?.name }}
+					</div>
+					<!-- <div id="details__add-to-list" class="col-3">
+						<div ngbDropdown class="d-inline-block" [open]="false">
+							<button class="details__add-to-list--btn" ngbDropdownToggle><i class="fa fa-list-ul" aria-hidden="true"></i></button>
+							<div id="details__add-to-list--menu" class="dropdown-menu details__addlist dropdown-menu-left" aria-labelledby="details__addlist" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
+								<div class="row">
+									<div class="col-12">
+										<h4 class="brand-color">Add to list...</h4>
+									</div>
+									<div class="col-12 list__add--items-group">
+										<div *ngFor="let list of lists">
+											<div (click)="addToList(list.listName)" class="list__add--item col-xs-12" style="margin:0;">{{list.listName}}</div>
+										</div>
+									</div>
+									<div class="col-12 shadow-top">
+										<form class="listForm" (ngSubmit)="createList(createListGroup)" [formGroup]="createListGroup">
+											<input #addInput class="list__add--input col-9" type="text" formControlName="listName" placeholder="Create new list ..." (click)="$event.stopPropagation();" (input)="$event.target.value">
+											<button class="btn rt-btn list__add--btn col-3" type="submit" (click)="addInput.value=''"><i class="fa fa-plus" aria-hidden="true"></i></button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+				</div>
+			</div>
+			<div class="overview__table col-5">
+				<ngb-tabset>
+					<ngb-tab title="Overview">
+						<template ngbTabContent>
+                        <table>
+                          <template ngFor let-item [ngForOf]="projectOverview" let-i="index" [ngForTrackBy]="trackByFn">
+                            <tr>
+                                <th>TP Consump.</th>
+                                <td>{{ item.adjustedTpUnits | number : '1.0-0' }}</td>
+                            </tr>
+                            <tr>
+                                <th>RTD Consump.</th>
+                                <td>{{ item.adjustedRtdUnits | number : '1.0-0' }}</td>
+                            </tr>
+                            <tr *ngIf="userData.revenue">
+                                <th>TP Euros</th>
+                                <td>&#8364; {{ item.tpEuro | number : '1.0-0' }}</td>
+                            </tr>
+                            <tr *ngIf="userData.revenue">
+                                <th>RTD Euros</th>
+                                <td>&#8364; {{ item.rtdEuro | number : '1.0-0' }}</td>
+                            </tr>
+                            <tr>
+                                <th>TP Streams</th>
+                                <td>{{ item.tpStreams | number : '1.0-0' }}</td>
+                            </tr>
+                            <tr>
+                                <th>RTD Streams</th>
+                                <td>{{ item.rtdStreams | number : '1.0-0' }}</td>
+                            </tr>
+                          </template>
+						</table>
+						</template>
+					</ngb-tab>
+					<ngb-tab>
+						<template ngbTabTitle>Streaming</template>
+						<template ngbTabContent>
+                        <table>
+                            <tbody>
+                                <tr *ngFor="let item of partnersStreams; let i = index">
+                                    <td class="light-white">{{ item.partnerName }}</td>
+                                    <td>{{ item.tpStreams | number : '1.0-0' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                      </template>
+					</ngb-tab>
+					<ngb-tab>
+						<template ngbTabTitle><span class="hidden-sm-down">Digital Tracks</span><span class="hidden-md-up">Tracks</span></template>
+						<template ngbTabContent>
+                        <table>
+                          <tr *ngFor="let item of partnersDigitalTracks; let i = index">
+                              <td class="light-white">{{ item.partnerName }}</td>
+                              <td>{{ item.tpDigitalTracks | number : '1.0-0' }}</td>
+                          </tr>
+                        </table>
+                      </template>
+					</ngb-tab>
+					<ngb-tab>
+						<template ngbTabTitle><span class="hidden-sm-down">Digital Albums</span><span class="hidden-md-up" style="white-space: nowrap;">D. Albums</span></template>
+						<template ngbTabContent>
+                        <table>
+                          <tr *ngFor="let item of partnersDigitalAlbums; let i = index">
+                              <td class="light-white">{{ item.partnerName }}</td>
+                              <td>{{ item.tpDigitalAlbums | number : '1.0-0' }}</td>
+                          </tr>
+                        </table>
+                      </template>
+					</ngb-tab>
+					<ngb-tab>
+						<template ngbTabTitle><span class="hidden-sm-down">Physical Albums</span><span class="hidden-md-up" style="white-space: nowrap;">P. Albums</span></template>
+						<template ngbTabContent>
+                        <table>
+                          <tr *ngFor="let item of partnersPhysicalAlbums; let i = index">
+                              <td class="light-white">{{ item.partnerName }}</td>
+                              <td>{{ item.tpPhysicalAlbums | number : '1.0-0' }}</td>
+                          </tr>
+                        </table>
+                      </template>
+					</ngb-tab>
+				</ngb-tabset>
+			</div>
+			<div class="col-1"></div>
+		</div>
+	</div>
+	<div class="hidden-sm-down details__line-chart">
+		<div class="row">
+			<div class="col-sm-10 mx-auto">
+				<h2><span class="details__title">{{ newProjectInfo.name }}</span> Consumption</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 col-lg-10 mx-auto">
+				<ngb-tabset>
+					<ngb-tab title='Overview'>
+						<template ngbTabContent>
+													<project-detail-line-chart-overview class="hidden-sm-down"></project-detail-line-chart-overview>
+											</template>
+					</ngb-tab>
+					<ngb-tab>
+						<template ngbTabTitle>Streams by Partner</template>
+						<template ngbTabContent>
+							<project-detail-line-chart-partners class="hidden-sm-down"></project-detail-line-chart-partners>
+											</template>
+					</ngb-tab>
+					<ngb-tab>
+						<template ngbTabTitle>Physical</template>
+						<template ngbTabContent>
+							<project-detail-line-chart-week-partners class="hidden-sm-down"></project-detail-line-chart-week-partners>
+											</template>
+					</ngb-tab>
+				</ngb-tabset>
+			</div>
+		</div>
+	</div>
+	<div class="table--container">
+		<div class="row mx-auto margin-bottom-half">
+			<div class="hidden-md-down col-1"></div>
+			<div class="col-10 mobile-no-padding">
+				<h2><span class="details__title">{{ newProjectInfo.name }}</span> Breakdown</h2>
+			</div>
+			<div class="col-2 no-padding text-right hidden-sm-up">
+				<div ngbDropdown class="hidden-sm-up d-inline-block" [open]="false">
+						<button id="listOptions" class="mobile__more-btn" ngbDropdownToggle><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="listOptions">
+								<div>
+										<div class="dropdown-item" (click)="exportService.download(artistService.artistName + ' - ' + 'ArtistProjectData', exportService.artistProjectData, exportService.csvArtistProjects)">Export Projects<i class="fa fa-sign-out" aria-hidden="true"></i></div>
+										<div class="dropdown-item" (click)="exportService.download(artistService.artistName + ' - ' + 'ArtistTrackData', exportService.artistTrackData, exportService.csvArtistTracks)">Export Tracks<i class="fa fa-sign-out" aria-hidden="true"></i></div>
+										<div class="dropdown-item" (click)="exportService.download(newArtistInfo.name + ' - ' + 'ArtistCountries', exportService.artistCountriesData, exportService.csvArtistCountries)">Export Countries<i class="fa fa-sign-out" aria-hidden="true"></i></div>
+								</div>
+						</div>
+				</div>
+			</div>
+			<div class="hidden-md-down col-1"></div>
+		</div>
+		<div class="col-md-12 col-lg-10 mx-auto mobile-no-padding">
+			<ngb-tabset>
+				<ngb-tab title='Albums'>
+					<template ngbTabContent>
+						<!-- <div class="no-padding text-right chart-btn"><button type="button" class="umg__button btn" (click)="exportService.download(artistService.artistName + ' - ' + 'ArtistProjectData', exportService.artistProjectData, exportService.csvArtistProjects)">Export<i class="fa fa-sign-out" aria-hidden="true" style="padding-left: 10px;"></i></button></div> -->
+						<table class="umg__table">
+								<thead>
+										<tr *ngFor="let x of globals.projectTableHeaders">
+												<th>{{ x.number }}</th>
+												<th>
+													Album Name
+												</th>
+												<th>
+													UPC
+												</th>
+												<th>{{ x.releaseDate }}</th>
+												<th>
+													{{ x.releaseToDate }}
+												</th>
+												<th>
+													{{ x.thisPeriod }}
+												</th>
+												<th>{{ x.variance }}</th>
+												<th>
+													{{ x.physicalAlbums }}
+												</th>
+												<th>
+													{{ x.digitalAlbums }}
+												</th>
+												<th>
+													{{ x.digitalTracks }}
+												</th>
+												<th>
+													{{ x.streams }}
+												</th>
+										</tr>
+								</thead>
+								<tbody>
+									<template ngFor let-album [ngForOf]="projectAlbumData" let-i="index" [ngForTrackBy]="trackByFn">
+										<tr *ngIf="album.albumName">
+												<td>{{ i + 1 }}</td>
+												<td><div *ngIf="album.albumName">{{ album.albumName }}</div><div *ngIf="!album.albumName">&mdash;</div></td>
+												<td><div *ngIf="album.albumId">{{ album.albumId }}</div><div *ngIf="!album.albumId">&mdash;</div></td>
+												<td><div *ngIf="album.albumReleaseDate">{{ album.albumReleaseDate | date:'yyyy-MM-dd' }}</div><div *ngIf="!album.albumReleaseDate">&mdash;</div></td>
+												<td><div *ngIf="album.adjustedRtdUnits">{{ album.adjustedRtdUnits | number : '1.0-0' }}</div><div *ngIf="!album.adjustedRtdUnits">&mdash;</div></td>
+												<td><div *ngIf="album.adjustedTotalUnits">{{ album.adjustedTotalUnits | number : '1.0-0' }}</div><div *ngIf="!album.adjustedTotalUnits">&mdash;</div></td>
+												<td>
+														<div *ngIf="album.adjustedPreviousUnits && album.adjustedTotalUnits" ngbTooltip="{{ globals.projectTableHeaders[0].lastPeriod }}: {{ album.adjustedPreviousUnits | number : '1.0-0' }}">
+																<span *ngIf="album.adjustedTotalUnits > album.adjustedPreviousUnits" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i> {{ ((album.adjustedTotalUnits - album.adjustedPreviousUnits) / (album.adjustedPreviousUnits)) * 100 | number : '1.1-1' }}%</span>
+																<span *ngIf="album.adjustedTotalUnits < album.adjustedPreviousUnits" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i> {{ ((album.adjustedTotalUnits - album.adjustedPreviousUnits) / (album.adjustedPreviousUnits)) * 100 | number : '1.1-1' }}%</span>
+																<span *ngIf="album.adjustedTotalUnits === album.adjustedPreviousUnits" class="no-wrap"> --</span>
+														</div>
+														<div *ngIf="!album.adjustedPreviousUnits || !album.adjustedTotalUnits">&mdash;</div>
+												</td>
+												<td><div *ngIf="album.totalPhysicalAlbums">{{ album.totalPhysicalAlbums | number : '1.0-0' }}</div><div *ngIf="!album.totalPhysicalAlbums">&mdash;</div></td>
+												<td><div *ngIf="album.totalDigitalAlbums">{{ album.totalDigitalAlbums | number : '1.0-0' }}</div><div *ngIf="!album.totalDigitalAlbums">&mdash;</div></td>
+												<td><div *ngIf="album.totalDigitalTracks">{{ album.totalDigitalTracks | number : '1.0-0' }}</div><div *ngIf="!album.totalDigitalTracks">&mdash;</div></td>
+												<td><div *ngIf="album.totalStreams">{{ album.totalStreams | number : '1.0-0' }}</div><div *ngIf="!album.totalStreams">&mdash;</div></td>
+										</tr>
+									</template>
+						</tbody>
+						</table>
+          </template>
+				</ngb-tab>
+				<ngb-tab>
+					<template ngbTabTitle>Tracks</template>
+					<template ngbTabContent>
+						<!-- <div class="no-padding text-right chart-btn"><button type="button" class="umg__button btn" (click)="exportService.download(artistService.artistName + ' - ' + 'ArtistTrackData', exportService.artistTrackData, exportService.csvArtistTracks)">Export<i class="fa fa-sign-out" aria-hidden="true" style="padding-left: 10px;"></i></button></div> -->
+			<table class="umg__table umg__table--tracks">
+					<thead>
+							<tr *ngFor="let x of globals.trackTableHeaders">
+									<th>{{ x.number }}</th>
+									<th>
+										{{ x.trackName }}
+									</th>
+									<th>
+									{{ x.releaseDate }}
+										</th>
+									<th>
+										{{ x.releaseToDate }}
+										</th>
+									<th>
+										{{ x.thisPeriod }}
+									</th>
+									<th>{{ x.variance }}</th>
+									<th>
+										{{ x.trackSales }}
+									</th>
+									<th>
+										{{ x.streamsTotal }}
+									</th>
+									<th>
+										{{ x.audioStreams }}
+									</th>
+									<th>
+										{{ x.videoStreams }}
+								</th>
+							</tr>
+					</thead>
+					<tbody>
+						<template ngFor let-track [ngForOf]="projectTrackData" let-i="index" [ngForTrackBy]="trackByFn">
+							<tr *ngIf="track.trackName">
+									<td>{{ i + 1 }}</td>
+									<td><div *ngIf="track.trackName"><a href='#/artist/{{ track.artistId }}/{{ track.projectId }}/{{ track.trackId }}'>
+									<!-- <a class="navigateTo" (click)="navigateTo('/artist/'+track.artistId+'/'+track.projectId+'/'+track.trackId)"> -->
+									{{ track.trackName }}</a></div><div *ngIf="!track.trackName">&mdash;</div></td>
+									<td><div *ngIf="track.trackReleaseDate">{{ track.trackReleaseDate | date:'yyyy-MM-dd' }}</div><div *ngIf="!track.trackReleaseDate">&mdash;</div></td>
+									<td><div *ngIf="track.adjustedRtdUnits">{{ track.adjustedRtdUnits | number : '1.0-0' }}</div><div *ngIf="!track.adjustedRtdUnits">&mdash;</div></td>
+									<td><div *ngIf="track.adjustedTotalUnits">{{ track.adjustedTotalUnits | number : '1.0-0' }}</div><div *ngIf="!track.adjustedTotalUnits">&mdash;</div></td>
+									<td>
+											<div *ngIf="track.adjustedPreviousUnits && track.adjustedTotalUnits" ngbTooltip="{{ globals.trackTableHeaders[0].lastPeriod }}: {{ track.adjustedPreviousUnits | number : '1.0-0' }}">
+													<span *ngIf="track.adjustedTotalUnits > track.adjustedPreviousUnits" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i> {{ ((track.adjustedTotalUnits - track.adjustedPreviousUnits) / (track.adjustedPreviousUnits)) * 100 | number : '1.1-1' }}%</span>
+													<span *ngIf="track.adjustedTotalUnits < track.adjustedPreviousUnits" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i> {{ ((track.adjustedTotalUnits - track.adjustedPreviousUnits) / (track.adjustedPreviousUnits)) * 100 | number : '1.1-1' }}%</span>
+													<span *ngIf="track.adjustedTotalUnits === track.adjustedPreviousUnits" class="no-wrap"> --</span>
+											</div>
+											<div *ngIf="!track.adjustedPreviousUnits || !track.adjustedTotalUnits">&mdash;</div>
+									</td>
+									<td><div *ngIf="track.totalDigitalTracks">{{ track.totalDigitalTracks | number : '1.0-0' }}</div><div *ngIf="!track.totalDigitalTracks">&mdash;</div></td>
+									<td><div *ngIf="track.totalStreams">{{ track.totalStreams | number : '1.0-0' }}</div><div *ngIf="!track.totalStreams">&mdash;</div></td>
+									<td><div *ngIf="track.totalAudioStreams">{{ track.totalAudioStreams | number : '1.0-0' }}</div><div *ngIf="!track.totalAudioStreams">&mdash;</div></td>
+									<td><div *ngIf="track.totalVideoStreams">{{ track.totalVideoStreams | number : '1.0-0' }}</div><div *ngIf="!track.totalVideoStreams">&mdash;</div></td>
+							</tr>
+						</template>
+</tbody>
+</table>
+          </template>
+				</ngb-tab>
+				<ngb-tab>
+					<template ngbTabTitle>Partners</template>
+					<template ngbTabContent>
+                    <div id="partners" class="col-sm-12">
+                      <div *ngIf="partnersByMediaTypeStreams[0].adjustedTotalStreams || partnersByMediaTypeStreams[0].adjustedPreviousStreams || partnersByMediaTypeStreams[0].adjustedRtdStreams" class="row">
+                  		<div class="col"><h4 class="thin">STREAMS BY PARTNER</h4></div><!-- <div class="col no-padding text-right"><button type="button" class="umg__button btn" (click)="exportService.download(newArtistInfo.name + ' - ' + 'ArtistDetailPartnersByMediaTypeStreams', exportService.partnersByMediaTypeStreamsData, exportService.csvPartnersByMediaTypeStreams)">Export <i class="fa fa-sign-out" aria-hidden="true"></i></button></div> -->
+                  </div>
+                    <table *ngIf="partnersByMediaTypeStreams[0].adjustedTotalStreams || partnersByMediaTypeStreams[0].adjustedPreviousStreams || partnersByMediaTypeStreams[0].adjustedRtdStreams" class="umg__table partners__table">
+                        <thead>
+                            <tr>
+                                <th>partner</th>
+                                <th>%</th>
+                                <th>lp</th>
+                                <th>tp</th>
+                                <th>var</th>
+                                <th>rtd</th>
+                                <th *ngIf="userData.revenue">tp rev</th>
+                                <th *ngIf="userData.revenue">rtd rev</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template ngFor let-item [ngForOf]="partnersByMediaTypeStreams" let-i="index" [ngForTrackBy]="trackByFn">
+                            <tr *ngIf="item.adjustedTotalStreams || item.adjustedPreviousStreams || item.adjustedRtdStreams">
+                                <td style="text-align: left;">{{ item.partnerName }}</td>
+                                <td><div *ngIf="item.adjustedTotalStreams">{{ ((item.adjustedTotalStreams) / (mediaTypeSums[0].adjustedUnitsStreamsSum)) * 100 | number : '1.1-1' }}%</div><div *ngIf="!item.adjustedTotalStreams">&mdash;</div></td>
+                                <td><div *ngIf="item.adjustedPreviousStreams">{{ item.adjustedPreviousStreams | number : '1.0-0' }}</div><div *ngIf="!item.adjustedPreviousStreams">0</div></td>
+                                <td><div *ngIf="item.adjustedTotalStreams">{{ item.adjustedTotalStreams | number : '1.0-0' }}</div><div *ngIf="!item.adjustedTotalStreams">0</div></td>
+                                <td>
+                                    <div *ngIf="item.adjustedPreviousStreams && item.adjustedTotalStreams" ngbTooltip="LP: {{ item.adjustedPreviousStreams | number : '1.0-0' }}">
+                                        <span *ngIf="item.adjustedTotalStreams > item.adjustedPreviousStreams" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.adjustedTotalStreams - item.adjustedPreviousStreams) / (item.adjustedPreviousStreams)) * 100 | number : '1.1-1' }}%</span>
+                                        <span *ngIf="item.adjustedTotalStreams < item.adjustedPreviousStreams" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.adjustedTotalStreams - item.adjustedPreviousStreams) / (item.adjustedPreviousStreams)) * 100 | number : '1.1-1' }}%</span>
+                                        <span *ngIf="item.adjustedTotalStreams === item.adjustedPreviousStreams" class="no-wrap">&mdash;</span>
+                                    </div>
+                                    <div *ngIf="!item.adjustedPreviousStreams || !item.adjustedTotalStreams">&mdash;</div>
+                                </td>
+                                <td><div *ngIf="item.adjustedRtdStreams">{{ item.adjustedRtdStreams | number : '1.0-0' }}</div><div *ngIf="!item.adjustedRtdStreams">&mdash;</div></td>
+                                <td *ngIf="userData.revenue"><div *ngIf="item.euroTotalsStreams">&#8364; {{ item.euroTotalsStreams | number : '1.0-0' }}</div><div *ngIf="!item.euroTotalsStreams">&mdash;</div></td>
+                                <td *ngIf="userData.revenue"><div *ngIf="item.euroRtdStreams">&#8364; {{ item.euroRtdStreams | number : '1.0-0' }}</div><div *ngIf="!item.euroRtdStreams">&mdash;</div></td>
+                            </tr>
+                          </template>
+					</tbody>
+					</table>
+					<div *ngIf="partnersByMediaTypeDigitalTracks[0].adjustedTotalDigitalTracks || partnersByMediaTypeDigitalTracks[0].adjustedPreviousDigitalTracks || partnersByMediaTypeDigitalTracks[0].adjustedRtdDigitalTracks" class="row margin-top-2">
+						<div class="col">
+							<h4 class="thin">DIGITAL TRACKS BY PARTNER</h4></div>
+						<!-- <div class="col no-padding text-right"><button type="button" class="umg__button btn" (click)="exportService.download(newArtistInfo.name + ' - ' + 'ArtistDetailPartnersByMediaTypeDigitalTracks', exportService.partnersByMediaTypeDigitalTracksData, exportService.csvPartnersByMediaTypeDigitalTracks)">Export <i class="fa fa-sign-out" aria-hidden="true"></i></button></div> -->
+					</div>
+					<table *ngIf="partnersByMediaTypeDigitalTracks[0].adjustedTotalDigitalTracks || partnersByMediaTypeDigitalTracks[0].adjustedPreviousDigitalTracks || partnersByMediaTypeDigitalTracks[0].adjustedRtdDigitalTracks" class="umg__table partners__table">
+						<thead>
+							<tr>
+								<th>partner</th>
+								<th>%</th>
+								<th>lp</th>
+								<th>tp</th>
+								<th>var</th>
+								<th>rtd</th>
+								<th *ngIf="userData.revenue">tp rev</th>
+								<th *ngIf="userData.revenue">rtd rev</th>
+							</tr>
+						</thead>
+						<tbody>
+							<template ngFor let-item [ngForOf]="partnersByMediaTypeDigitalTracks" let-i="index" [ngForTrackBy]="trackByFn">
+                        <tr *ngIf="item.adjustedTotalDigitalTracks || item.adjustedPreviousDigitalTracks || item.adjustedRtdDigitalTracks">
+                            <td style="text-align: left;">{{ item.partnerName }}</td>
+                            <td><div *ngIf="item.adjustedTotalDigitalTracks">{{ ((item.adjustedTotalDigitalTracks) / (mediaTypeSums[0].adjustedunitsDigitalTracksSum)) * 100 | number : '1.1-1' }}%</div><div *ngIf="!item.adjustedTotalDigitalTracks">&mdash;</div></td>
+                            <td><div *ngIf="item.adjustedPreviousDigitalTracks">{{ item.adjustedPreviousDigitalTracks | number : '1.0-0' }}</div><div *ngIf="!item.adjustedPreviousDigitalTracks">0</div></td>
+                            <td><div *ngIf="item.adjustedTotalDigitalTracks">{{ item.adjustedTotalDigitalTracks | number : '1.0-0' }}</div><div *ngIf="!item.adjustedTotalDigitalTracks">0</div></td>
+                            <td>
+                                <div *ngIf="item.adjustedPreviousDigitalTracks && item.adjustedTotalDigitalTracks" ngbTooltip="LP: {{ item.adjustedPreviousDigitalTracks | number : '1.0-0' }}">
+                                    <span *ngIf="item.adjustedTotalDigitalTracks > item.adjustedPreviousDigitalTracks" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.adjustedTotalDigitalTracks - item.adjustedPreviousDigitalTracks) / (item.adjustedPreviousDigitalTracks)) * 100 | number : '1.1-1' }}%</span>
+                                    <span *ngIf="item.adjustedTotalDigitalTracks < item.adjustedPreviousDigitalTracks" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.adjustedTotalDigitalTracks - item.adjustedPreviousDigitalTracks) / (item.adjustedPreviousDigitalTracks)) * 100 | number : '1.1-1' }}%</span>
+                                    <span *ngIf="item.adjustedTotalDigitalTracks === item.adjustedPreviousDigitalTracks" class="no-wrap">0%</span>
+                                </div>
+                                <div *ngIf="!item.adjustedPreviousDigitalTracks || !item.adjustedTotalDigitalTracks">&mdash;</div>
+                            </td>
+                            <td><div *ngIf="item.adjustedRtdDigitalTracks">{{ item.adjustedRtdDigitalTracks | number : '1.0-0' }}</div><div *ngIf="!item.adjustedRtdDigitalTracks">&mdash;</div></td>
+                            <td *ngIf="userData.revenue"><div *ngIf="item.euroTotalsDigitalTracks">&#8364; {{ item.euroTotalsDigitalTracks | number : '1.0-0' }}</div><div *ngIf="!item.euroTotalsDigitalTracks">&mdash;</div></td>
+                            <td *ngIf="userData.revenue"><div *ngIf="item.euroRtdDigitalTracks">&#8364; {{ item.euroRtdDigitalTracks | number : '1.0-0' }}</div><div *ngIf="!item.euroRtdDigitalTracks">&mdash;</div></td>
+                        </tr>
+                      </template>
+						</tbody>
+					</table>
+					<div *ngIf="partnersByMediaTypeDigitalAlbums[0].totalDigitalAlbums || partnersByMediaTypeDigitalAlbums[0].previousDigitalAlbums || partnersByMediaTypeDigitalAlbums[0].rtdDigitalAlbums" class="row margin-top-2">
+						<div class="col">
+							<h4 class="thin">DIGITAL ALBUMS BY PARTNER</h4></div>
+						<!-- <div class="col no-padding text-right"><button type="button" class="umg__button btn" (click)="exportService.download(newArtistInfo.name + ' - ' + 'ArtistDetailPartnersByMediaTypeDigitalAlbums', exportService.partnersByMediaTypeDigitalAlbumsData, exportService.csvPartnersByMediaTypeDigitalAlbums)">Export <i class="fa fa-sign-out" aria-hidden="true"></i></button></div> -->
+					</div>
+					<table *ngIf="partnersByMediaTypeDigitalAlbums[0].totalDigitalAlbums || partnersByMediaTypeDigitalAlbums[0].previousDigitalAlbums || partnersByMediaTypeDigitalAlbums[0].rtdDigitalAlbums" class="umg__table partners__table">
+						<thead>
+							<tr>
+								<th>partner</th>
+								<th>%</th>
+								<th>lp</th>
+								<th>tp</th>
+								<th>var</th>
+								<th>rtd</th>
+								<th *ngIf="userData.revenue">tp rev</th>
+								<th *ngIf="userData.revenue">rtd rev</th>
+							</tr>
+						</thead>
+						<tbody>
+							<template ngFor let-item [ngForOf]="partnersByMediaTypeDigitalAlbums" let-i="index" [ngForTrackBy]="trackByFn">
+                    <tr *ngIf="item.totalDigitalAlbums || item.previousDigitalAlbums || item.rtdDigitalAlbums">
+                        <td>{{ item.partnerName }}</td>
+                        <td><div *ngIf="item.totalDigitalAlbums">{{ ((item.totalDigitalAlbums) / (mediaTypeSums[0].unitsDigitalAlbumsSum)) * 100 | number : '1.1-1' }}%</div><div *ngIf="!item.totalDigitalAlbums">&mdash;</div></td>
+                        <td><div *ngIf="item.previousDigitalAlbums">{{ item.previousDigitalAlbums | number : '1.0-0' }}</div><div *ngIf="!item.previousDigitalAlbums">0</div></td>
+                        <td><div *ngIf="item.totalDigitalAlbums">{{ item.totalDigitalAlbums | number : '1.0-0' }}</div><div *ngIf="!item.totalDigitalAlbums">0</div></td>
+                        <td>
+                            <div *ngIf="item.previousDigitalAlbums && item.totalDigitalAlbums" ngbTooltip="LP: {{ item.previousDigitalAlbums | number : '1.0-0' }}">
+                                <span *ngIf="item.totalDigitalAlbums > item.previousDigitalAlbums" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.totalDigitalAlbums - item.previousDigitalAlbums) / (item.previousDigitalAlbums)) * 100 | number : '1.1-1' }}%</span>
+                                <span *ngIf="item.totalDigitalAlbums < item.previousDigitalAlbums" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.totalDigitalAlbums - item.previousDigitalAlbums) / (item.previousDigitalAlbums)) * 100 | number : '1.1-1' }}%</span>
+                                <span *ngIf="item.totalDigitalAlbums === item.previousDigitalAlbums" class="no-wrap">0%</span>
+                            </div>
+                            <div *ngIf="!item.previousDigitalAlbums || !item.totalDigitalAlbums">&mdash;</div>
+                        </td>
+                        <td><div *ngIf="item.rtdDigitalAlbums">{{ item.rtdDigitalAlbums | number : '1.0-0' }}</div><div *ngIf="!item.rtdDigitalAlbums">&mdash;</div></td>
+                        <td *ngIf="userData.revenue"><div *ngIf="item.euroTotalsDigitalAlbums">&#8364; {{ item.euroTotalsDigitalAlbums | number : '1.0-0' }}</div><div *ngIf="!item.euroTotalsDigitalAlbums">&mdash;</div></td>
+                        <td *ngIf="userData.revenue"><div *ngIf="item.euroRtdDigitalAlbums">&#8364; {{ item.euroRtdDigitalAlbums | number : '1.0-0' }}</div><div *ngIf="!item.euroRtdDigitalAlbums">&mdash;</div></td>
+                    </tr>
+                  </template>
+						</tbody>
+					</table>
+					<div *ngIf="partnersByMediaTypePhysicalAlbums[0].totalPhysicalAlbums || partnersByMediaTypePhysicalAlbums[0].previousPhysicalAlbums || partnersByMediaTypePhysicalAlbums[0].rtdPhysicalAlbums" class="row margin-top-2">
+						<div class="col">
+							<h4 class="thin">PHYSICAL ALBUMS BY PARTNER</h4></div>
+						<!-- <div class="col no-padding text-right"><button type="button" class="umg__button btn" (click)="exportService.download(newArtistInfo.name + ' - ' + 'ArtistDetailPartnersByMediaTypePhysicalAlbums', exportService.partnersByMediaTypePhysicalAlbumsData, exportService.csvPartnersByMediaTypePhysicalAlbums)">Export <i class="fa fa-sign-out" aria-hidden="true"></i></button></div> -->
+					</div>
+					<table *ngIf="partnersByMediaTypePhysicalAlbums[0].totalPhysicalAlbums || partnersByMediaTypePhysicalAlbums[0].previousPhysicalAlbums || partnersByMediaTypePhysicalAlbums[0].rtdPhysicalAlbums" class="umg__table partners__table">
+						<thead>
+							<tr>
+								<th>partner</th>
+								<th>%</th>
+								<th>lp</th>
+								<th>tp</th>
+								<th>var</th>
+								<th>rtd</th>
+								<th *ngIf="userData.revenue">tp rev</th>
+								<th *ngIf="userData.revenue">rtd rev</th>
+							</tr>
+						</thead>
+						<tbody>
+							<template ngFor let-item [ngForOf]="partnersByMediaTypePhysicalAlbums" let-i="index" [ngForTrackBy]="trackByFn">
+                <tr *ngIf="item.totalPhysicalAlbums || item.previousPhysicalAlbums || item.rtdPhysicalAlbums">
+                    <td style="text-align: left;">{{ item.partnerName }}</td>
+                    <td><div *ngIf="item.totalPhysicalAlbums">{{ ((item.totalPhysicalAlbums) / (mediaTypeSums[0].unitsPhysicalAlbumsSum)) * 100 | number : '1.1-1' }}%</div><div *ngIf="!item.totalPhysicalAlbums">&mdash;</div></td>
+                    <td><div *ngIf="item.previousPhysicalAlbums">{{ item.previousPhysicalAlbums | number : '1.0-0' }}</div><div *ngIf="!item.previousPhysicalAlbums">0</div></td>
+                    <td><div *ngIf="item.totalPhysicalAlbums">{{ item.totalPhysicalAlbums | number : '1.0-0' }}</div><div *ngIf="!item.totalPhysicalAlbums">0</div></td>
+                    <td>
+                        <div *ngIf="item.previousPhysicalAlbums && item.totalPhysicalAlbums" ngbTooltip="LP: {{ item.previousPhysicalAlbums | number : '1.0-0' }}">
+                            <span *ngIf="item.totalPhysicalAlbums > item.previousPhysicalAlbums" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.totalPhysicalAlbums - item.previousPhysicalAlbums) / (item.previousPhysicalAlbums)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="item.totalPhysicalAlbums < item.previousPhysicalAlbums" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.totalPhysicalAlbums - item.previousPhysicalAlbums) / (item.previousPhysicalAlbums)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="item.totalPhysicalAlbums === item.previousPhysicalAlbums" class="no-wrap">0%</span>
+                        </div>
+                        <div *ngIf="!item.previousPhysicalAlbums || !item.totalPhysicalAlbums">&mdash;</div>
+                    </td>
+                    <td><div *ngIf="item.rtdPhysicalAlbums">{{ item.rtdPhysicalAlbums | number : '1.0-0' }}</div><div *ngIf="!item.rtdPhysicalAlbums">&mdash;</div></td>
+                    <td *ngIf="userData.revenue"><div *ngIf="item.euroTotalsPhysicalAlbums">&#8364; {{ item.euroTotalsPhysicalAlbums | number : '1.0-0' }}</div><div *ngIf="!item.euroTotalsPhysicalAlbums">&mdash;</div></td>
+                    <td *ngIf="userData.revenue"><div *ngIf="item.euroRtdPhysicalAlbums">&#8364; {{ item.euroRtdPhysicalAlbums | number : '1.0-0' }}</div><div *ngIf="!item.euroRtdPhysicalAlbums">&mdash;</div></td>
+                </tr>
+              </template>
+						</tbody>
+					</table>
+					<div class="data-disclaimer col text-right">** <strong>RTD Units, TP Units:</strong> Adjusted album ratios. <strong>Media Type Units:</strong> Raw numbers.</div>
+		</div>
+		</template>
+		</ngb-tab>
+		<ngb-tab>
+			<template ngbTabTitle>Countries</template>
+			<template ngbTabContent>
+                      <div id="top-regions">
+                        <div class="row mx-auto">
+                          <div class="col-5">
+                          <project-detail-pie-chart class="hidden-sm-down"></project-detail-pie-chart>
+                        </div>
+                        <div class="col-6 top-regions__chart--bar">
+                          <project-detail-bar-chart class="hidden-sm-down"></project-detail-bar-chart>
+                        </div>
+                        <div class="col-1">
+                        </div>
+                      </div>
+                      <div class="row mx-auto">
+                        <!-- <div class="col no-padding text-right chart-btn"><button type="button" class="umg__button btn" (click)="exportService.download(newArtistInfo.name + ' - ' + 'ArtistCountries', exportService.artistCountriesData, exportService.csvArtistCountries)">Export Table<i class="fa fa-sign-out" aria-hidden="true" style="padding-left: 10px;"></i></button></div> -->
+                        <div class="col-12 top-regions__table">
+                          <table class="umg__table">
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>
+        country
+                                        </th>
+                                <th>
+        rtd
+
+                                        </th>
+                                <th>
+              tp
+
+                                        </th>
+                                <th>var</th>
+                                <th>
+      physical albums
+
+                                        </th>
+                                <th>
+digital albums
+
+                                        </th>
+                                <th>
+digital tracks
+
+                                        </th>
+                                <th>
+streams
+
+                                        </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let item of projectCountries; let i = index;">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ item.territory.name }}</td>
+                                <td><div *ngIf="item.adjustedRtdUnits">{{ item.adjustedRtdUnits.all | number : '1.0-0' }}</div></td>
+                                <td><div *ngIf="item.adjustedTotalUnits">{{ item.adjustedTotalUnits.all | number : '1.0-0' }}</div></td>
+                                <td>
+                                    <div *ngIf="item.adjustedPreviousUnits && item.adjustedTotalUnits" ngbTooltip="LP: {{ item.adjustedPreviousUnits.all | number : '1.0-0' }}">
+                                        <span *ngIf="item.adjustedTotalUnits.all > item.adjustedPreviousUnits.all" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.adjustedTotalUnits.all - item.adjustedPreviousUnits.all) / (item.adjustedPreviousUnits.all)) * 100 | number : '1.1-1' }}%</span>
+                                        <span *ngIf="item.adjustedTotalUnits.all < item.adjustedPreviousUnits.all" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.adjustedTotalUnits.all - item.adjustedPreviousUnits.all) / (item.adjustedPreviousUnits.all)) * 100 | number : '1.1-1' }}%</span>
+                                        <span *ngIf="item.adjustedTotalUnits.all === item.adjustedPreviousUnits.all" class="no-wrap"></span>
+                                    </div>
+                                </td>
+                                <td><div *ngIf="item.totalUnits">{{ item.totalUnits.physicalAlbums | number : '1.0-0' }}</div></td>
+                                <td><div *ngIf="item.totalUnits">{{ item.totalUnits.digitalAlbums | number : '1.0-0' }}</div></td>
+                                <td><div *ngIf="item.totalUnits">{{ item.totalUnits.digitalTracks | number : '1.0-0' }}</div></td>
+                                <td><div *ngIf="item.totalUnits">{{ item.totalUnits.streams | number : '1.0-0' }}</div></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="data-disclaimer col">** <strong>RTD Units, TP Units:</strong> Adjusted album ratios. <strong>Media Type Units:</strong> Raw numbers. <strong>Pie Chart Units:</strong> Adjusted album ratios.</div>
+                      </div>
+                  </template>
+		</ngb-tab>
+		</ngb-tabset>
+	</div>
+</div>
+</div>

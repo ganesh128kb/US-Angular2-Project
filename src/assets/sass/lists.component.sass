@@ -1,0 +1,243 @@
+@import 'variables'
+@import 'helpers'
+
+.list
+	padding: 0
+	h2
+		color: #cccccc
+		font-size: 1.5rem
+		padding: 2.5rem 0 0.45rem 0
+
+.btn-tooltip
+  padding: 0
+  display: inline-block
+
+.filter__btn--container
+  margin-top: 0.25rem
+
+.filter__btn
+	padding: 1.25rem
+	width: 100%
+	background: #22252b
+	border: 2px solid #30343d
+	font-weight: 100
+	color: #fff
+	@media(min-width: 576px)
+		padding: 0.45rem 1rem
+	.fa
+		padding-left: 0.25rem
+	&:hover
+		border: 2px solid $brandColor
+	&:active
+		background-color: #22252b
+
+.lists__goto
+  padding-left: 1rem
+  font-size: 1rem
+  &:hover
+    text-decoration: underline
+
+.list__info
+  padding-left: 0
+
+.list__created--dates
+  padding-top: 0.4rem
+  @media(max-width: 768px)
+    font-size: 1rem
+		h5
+			font-size: 1rem
+
+.list__description--name
+  width: 100%
+  max-width: 455px
+  border: 0px solid #22252B
+  border-radius: 5px
+  padding-left: 1rem
+  font-size: 2.25rem
+  color: #ffffff
+  @media(max-width: 768px)
+    width: 100%
+    max-width: 400px
+  span
+    padding: 0.5rem 0.5rem 0.5rem 0
+  #listName
+    background: transparent !important
+    margin-right: 2rem
+    display: inline-block
+    font-weight: 300
+    @media(max-width: 768px)
+      width: 100%
+      max-width: 400px
+  input
+    border: 0px solid #22252B
+    border-radius: 5px
+    padding: 0
+		background-color: transparent
+		@media(max-width: 768px)
+      width: 100%
+      max-width: 400px
+  label
+    margin-bottom: 0
+  .list__description--edit
+    display: none
+    margin: 0
+  .list__description--edit-save
+    position: absolute
+		top: 0
+		right: 0
+  &:hover, &:focus
+    border: 1px solid #363B45
+    margin-bottom: -1px
+    @media(max-width: 768px)
+      .list__description--edit-save
+        position: absolute
+        top: 0
+        right: 0
+    .list__description--edit
+      color: #cccccc
+      display: inline-block
+      float: right
+      background-color: #363B45
+      border: 0
+      border-radius: 0 3px 3px 0
+      font-size: 1rem
+      padding: 1.1rem 0.5rem 0.8rem 0.5rem
+      @media(max-width: 768px)
+        padding: 1rem 0.3rem 1rem 0.3rem
+      &:hover
+        background-color: $brandColor
+        cursor: pointer
+        color: #22252B
+
+.list-add
+	background-color: #121416
+	text-align: center
+	padding: 3.15rem
+
+.list-add__list-title
+	color: #60B9EF
+	font-size: 1.5em
+	padding: .25rem
+	padding-right: 1rem
+
+.list-add__searchForm
+	display: inline-block
+	max-width: 24rem
+	width: 80%
+
+.list
+	.table__container
+		background-color: #22252B
+
+		&:nth-child(even)
+  			background-color: #252930
+
+input
+	background: #22252b
+	border: 1px solid #393e49
+	//width: 100%
+	border-radius: 5px
+	padding: .5rem 1rem
+	color: #cdcecf
+	//width: 50%
+
+.list__info
+	padding-bottom: 0.7rem
+	border-bottom: 1px solid #363B45
+
+#search
+  background: #22252b
+  border: 1px solid #393e49
+  width: 45%
+  margin-left: 10px
+  margin-right: 10px
+  border-radius: 5px
+  padding: .5rem 1rem
+  color: #cdcecf
+  max-width: 24rem
+  &:focus
+    border-color: $brandColor
+    transition: .2s
+  @media(max-width: 400px)
+    width: 100%
+
+.search__results
+  position: absolute
+  text-align: left
+  top: 39px
+  right: 450px
+  padding: 0
+  background-color: tranpsarent
+  z-index: 999
+  box-shadow: 2px 2px 2px rgba(25,28,31,0.5)
+  transition: .1s
+  overflow-y: scroll
+  height: auto
+  max-height: 500px
+  .fa-plus-square
+    color: $brandColor
+    padding-right: 15px
+    padding-left: 5px
+  li
+    background-color: rgba(54,59,69,0.95)
+    &:hover
+      cursor: pointer
+      background-color: $brandColor
+    a
+      &:hover
+        color: #22252B
+        .search__title, .search__title-two
+          font-weight: 500
+        .search__title-sub
+          font-weight: 300
+        .fa-plus-square
+          color: #22252B
+      .search__title
+        padding: 10px
+      .search__title-two
+        padding: 10px 10px 0 8px
+        text-overflow: ellipsis
+        white-space: nowrap
+        overflow: hidden
+      .search__title, .search__title-two
+        font-weight: 300
+        &:hover
+          color: #22252B
+      .search__title-sub
+        padding: 0 10px 10px 45px
+        font-size: 0.8rem
+        font-weight: 100
+				&:hover
+					color: #22252B
+
+  .search__type
+    background-color: #2B3038
+    padding: 12px 10px
+    h3
+      font-size: 1.15em
+      color: $brandColor
+      font-weight: 300
+
+.list__report-box
+  background: #363B45
+  padding: 0.625rem
+
+///DROPDOWN
+
+.dropdown-menu
+  padding: 0
+  background-color: #363b45
+  border-radius: 0
+  min-width: 0
+
+.dropdown-item
+	padding: 0.3rem 0.75rem 0.3rem 0.75rem
+	background-color: #363b45
+	color: #ffffff
+	font-weight: 300
+	width: 150px
+	&:hover
+		background-color: $brandColor
+		cursor: pointer
+		a
+      color: #22252b

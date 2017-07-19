@@ -1,0 +1,350 @@
+@import 'variables'
+@import 'helpers'
+
+.container
+	padding: 1.50rem 0 0.75rem 0
+	@media(max-width: $col-l-min)
+		width: 45rem
+.filter__shadow
+	position: absolute
+	display: none
+	top: 0
+	left: 0
+	background: #000
+	text-align: center
+	visibility: hidden
+	width: 100%
+	z-index: 600
+	padding-bottom: 1.4rem
+
+.filter__shadow--mobile
+  position: absolute
+  padding-bottom: 0.25rem
+  display: none
+  top: 0
+  left: 0
+  background: #000
+  text-align: center
+  visibility: hidden
+  width: 100%
+  z-index: 600
+
+.form-group:last-child
+  margin-bottom: 0
+
+.card-block
+  background-color: #f7f5f2
+
+.completer-limit /deep/ .completer-dropdown
+  overflow-y: auto
+  max-height: 20rem
+
+/deep/ .completer-input
+  background-color: #22252B !important
+  color: #ffffff !important
+  padding-left: 1.5rem
+
+/deep/ .disabled
+  .completer-input
+    background-color: #16181C !important
+  .completer-input::-webkit-input-placeholder
+    color: #A5A5A5 !important
+  .completer-input:-moz-placeholder
+    color: #A5A5A5 !important
+  .completer-input::-moz-placeholder
+    color: #A5A5A5 !important
+  .completer-input::-ms-input-placeholder
+    color: #A5A5A5 !important
+
+/deep/ .completer-input::-webkit-input-placeholder
+  color: #ffffff !important
+
+/deep/ .completer-input:-moz-placeholder
+  color: #ffffff !important
+
+/deep/ .completer-input::-moz-placeholder
+  color: #ffffff !important
+
+/deep/ .completer-input:-ms-input-placeholder
+  color: #ffffff !important
+
+/deep/ .completer-input::-ms-input-placeholder
+  color: #ffffff !important
+
+/deep/ .completer-dropdown
+  margin-top: 5px !important
+  background-color: #363B45 !important
+  box-shadow: rgba(0,0,0,0.25) !important
+  color: #ffffff !important
+  border: 0 !important
+
+/deep/ .completer-row
+  color: #ffffff !important
+  font-weight: 300 !important
+
+/deep/ .completer-selected-row
+  background-color: $brandColor !important
+  color: #1a1a1a !important
+  font-weight: 300 !important
+
+.chevron
+  color: #ffffff
+
+.chevron-holder
+  top: 5px
+  right: 1.5rem
+  position: absolute
+  height: 100%
+  border: 1px solid rgba(0,0,0,0)
+  border-top-color: rgba(0, 0, 0, 0)
+  background-color: transparent
+  border-bottom-left-radius: 0
+  border-top-left-radius: 0
+  border-left: 0
+
+.with-chevron /deep/ .completer-input
+  border-right: 0
+  border-bottom-right-radius: 0
+  border-top-right-radius: 0
+
+/deep/ .completer-item:nth-child(23)
+  padding-bottom: 1.75rem !important
+
+/deep/ .completer-item:nth-child(49)
+  padding-bottom: 1.75rem !important
+
+.artist-name
+  text-align: center
+  font-weight: 300
+  color: $brandColor
+
+.filter__base
+  @media(max-width: 768px)
+    display: none
+  padding-bottom: 1.25rem
+
+/deep/ .ngb-dp-week:nth-child(2)
+  padding-top: 0.6rem !important
+
+/deep/ .ngb-dp-week
+  margin: 0.15rem 0 0.15rem 0
+
+/deep/ .ngb-dp-header
+  padding-top: 0.5rem !important
+
+/deep/ .btn-link
+  color: #ffffff
+  margin-top: -2px
+
+/deep/ .btn-link:hover
+  color: $brandColor
+  margin-top: -2px
+
+/deep/ .btn-link:focus
+  color: #ffffff
+  margin-top: -2px
+
+/deep/ .outside
+  opacity: 1
+
+/deep/ .btn-secondary
+  color: #ffffff !important
+  background-color: #22252B !important
+  border: 0 !important
+  line-height: 2.15rem !important
+
+/deep/ .bg-primary
+  color: #1a1a1a !important
+  background-color: $brandColor !important
+  line-height: 2.15rem !important
+  font-weight: 300
+
+/deep/ .bg-faded
+  background-color: #22252B
+
+/deep/ .font-italic
+  font-style: normal
+
+/deep/ .text-info
+  color: $brandColor
+
+.filter__btn--container
+	@media(max-width: 576px)
+		flex: 0 0 19.666667%
+		max-width: 19.666667%
+
+.filter__dropdown
+	width: 100%
+	margin: 0 auto
+
+.filter__btn
+  width: 100%
+  background: #22252b
+  border: 1px solid #30343d
+  font-weight: 100
+  color: #fff
+  @media(max-width: 576px)
+    padding: 0.25rem 0.6rem
+  .fa
+    padding-left: 0.25rem
+  &:hover
+    border: 1px solid $brandColor
+  &:active
+    background-color: #22252b
+
+#filter__period
+	//Below are changes to ng-bootstrap styling for radio select buttons
+	.btn-primary
+		background-color: transparent
+		border: 1px solid transparent
+		margin: 1rem 0.25rem
+		font-weight: 100
+		padding: 0.5rem
+		@media(max-width: 768px)
+			margin: 0
+	.btn-primary:focus, .btn:focus
+		outline: 0
+		box-shadow: none
+	.btn-group>.btn:not(:first-child):not(:last-child):not(.dropdown-toggle)
+		border-radius: 5px
+	.btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle)
+		border-top-right-radius: 5px
+		border-bottom-right-radius: 5px
+		border-top-left-radius: 5px
+		border-bottom-left-radius: 5px
+	.btn-group>.btn:last-child:not(:first-child), .btn-group>.dropdown-toggle:not(:first-child)
+		border-top-right-radius: 5px
+		border-bottom-right-radius: 5px
+		border-top-left-radius: 5px
+		border-bottom-left-radius: 5px
+	.btn-primary.active, .btn-primary:active, .open>.dropdown-toggle.btn-primary
+		color: #fff
+		font-weight: 100
+		background-color: transparent
+		border: 1px solid $brandColor
+	.btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus, .btn-primary:active:focus, .btn-primary:active:hover, .open>.dropdown-toggle.btn-primary.focus, .open>.dropdown-toggle.btn-primary:focus, .open>.dropdown-toggle.btn-primary:hover
+		color: #fff
+		font-weight: 100
+		background-color: transparent
+		box-shadow: none
+		outline: 0
+		border: 1px solid $brandColor
+		padding: 0.5rem
+
+.filter__pill
+	background-color: #60b9ef
+	padding: 0.25rem 0.75rem
+	display: inline-block
+	color: #252930
+	font-weight: 400
+	border-radius: 1rem
+	margin: 1rem 0.5rem 0 0
+	&>a
+		color: #2d3d4b
+		cursor: pointer
+	.fa
+		padding-right: 0.25rem
+		color: #252930
+
+.filter__dropdown
+	ul
+		max-height: 300px
+		overflow-y: scroll
+		background-color: #363b45
+		&>li>a:focus,
+		&>li>a:hover
+			background-color: #60b9ef
+			color: #334c5f
+			font-weight: 300
+			cursor: pointer
+		&>li
+			&>a
+				color: #CCC
+				font-size: 1rem
+				text-transform: capitalize
+				padding: 0.313rem 1.250rem
+				font-weight: 100
+.filter__pill
+  @media(max-width: 768px)
+    margin: 0.75rem 0.25rem
+    padding: 0.25rem 0.5rem
+    font-size: 0.75rem
+
+.filter__btn--clear
+	position: absolute
+	visibility: hidden
+	opacity: 0
+	animation: fadeInOut 2s
+	-webkit-animation: fadeInOut 2s /* Safari, Chrome and Opera > 12.1 */
+	-moz-animation: fadeInOut 2s /* Firefox < 16 */
+	-ms-animation: fadeInOut 2s /* Internet Explorer */
+	-o-animation: fadeInOut 2s /* Opera < 12.1 */
+	.filter__btn
+		background-color: #bc2261
+		border: 1px solid #8e194e
+
+.filter__child
+	background: #363b45
+	padding: 0.25rem 0.5rem 0.25rem 0.5rem
+	color: #ffffff
+	font-weight: 300
+	&:hover
+		background-color: $brandColor
+		color: #22252b
+		cursor: pointer
+
+.dropdown-menu
+	padding: 0
+	border-radius: 0
+	background-color: #363b45
+
+.dropdown-item
+	padding: 0.25rem 0.5rem 0.25rem 0.5rem
+	background-color: #363b45
+	color: #ffffff
+	font-weight: 300
+	&:hover
+		background-color: $brandColor
+		color: #22252b
+		cursor: pointer
+
+.dropdown-item--label
+	padding: 0.5rem
+	background-color: #22252B
+	color: #ffffff
+	font-weight: 400
+
+.hideFilterDropdown
+	visibility: hidden
+
+.hideFilterDropdownMobile
+  visibility: hidden
+
+.hidden-mobile
+  display: none
+
+//ng-bootstrap modal styling
+
+.modal-body
+	background-color: #363b45
+	height: 500px
+	h4
+		font-weight: 100
+		color: $brandColor
+.modal-header
+  background-color: #22252b
+  color: #ffffff
+  border-bottom: 0
+  h4
+    font-weight: 300
+  .close
+    color: #ffffff
+    opacity: 1
+    text-shadow: none
+  button
+    &:focus
+      border: 0
+.modal-footer
+  background-color: #22252b
+  border-top: 0
+  padding: 2rem

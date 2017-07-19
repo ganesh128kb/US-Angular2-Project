@@ -1,0 +1,39 @@
+<form style="display:inline;" (mouseenter)="toggleExists()" (mouseleave)="toggleExists(); searchInput.blur()">
+    <input #searchInput id="search" type="text" (input)="term$.next($event.target.value)" placeholder="Search artists, tracks, projects ..." autocomplete="off">
+    <ul class="search__results col-sm-6" *ngIf="exists">
+        <div class="search__results--inside">
+            <div *ngIf="items?.Artist.length != 0 && items?.Artist" class="search__type">
+                <h3>Artists</h3>
+            </div>
+            <li *ngFor="let item of items?.Artist" (mousedown)="$event.preventDefault()" (click)="searchInput.value=''">
+                <a class="artist" (click)="addToList('artists', 'null', 'add', item)">
+                    <div class="search__title">
+                        <i class="fa fa-plus-square" aria-hidden="true"></i> {{ item.artistName }}
+                    </div>
+                </a>
+            </li>
+            <div *ngIf="items?.Project.length != 0 && items?.Project" class="search__type">
+                <h3>Projects</h3>
+            </div>
+            <li *ngFor="let item of items?.Project" (mousedown)="$event.preventDefault()" (click)="searchInput.value=''">
+                <a (click)="addToList('projects', 'null', 'add', item)">
+                    <div class="search__title-two">
+                        <i class="fa fa-plus-square" aria-hidden="true"></i> {{ item.projectName }}
+                    </div>
+                    <div class="search__title-sub">{{ item.artistName }}</div>
+                </a>
+            </li>
+            <div *ngIf="items?.Track.length != 0 && items?.Track" class="search__type">
+                <h3>Tracks</h3>
+            </div>
+            <li *ngFor="let item of items?.Track" (mousedown)="$event.preventDefault()" (click)="searchInput.value=''">
+                <a class="track" (click)="addToList('tracks', 'null', 'add', item)">
+                    <div class="search__title-two">
+                        <i class="fa fa-plus-square" aria-hidden="true"></i> {{ item.trackName || item.name }}
+                    </div>
+                    <div class="search__title-sub">{{ item.artistName }}</div>
+                </a>
+            </li>
+        </div>
+    </ul>
+</form>

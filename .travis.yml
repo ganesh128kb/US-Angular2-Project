@@ -1,0 +1,9 @@
+cache: yarn
+language: node_js
+node_js:  # gets version from .nvmrc file if left blank
+script:
+  # - npm run lint
+  # - npm run build
+  - echo "Need to add tests!"
+notifications:    # post updates to build channel
+  slack: umg-swift:Fp1iaEjFq4Ayd5j39GOhmDuY

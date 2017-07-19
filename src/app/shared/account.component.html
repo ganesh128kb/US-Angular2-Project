@@ -1,0 +1,83 @@
+<div class="row">
+	<div class="col-sm-12 header__sub-header">
+		Account Settings
+	</div>
+</div>
+<div class="container-fluid account">
+	<div class="row">
+		<div class="account--title center-block">
+			<h3 class="thin">Account Information</h3>
+		</div>
+	</div>
+	<div class="account__info center-block">
+		<div class="row">
+			<div class="col-sm-3">
+				<span class="account__info--title">Name</span>
+			</div>
+			<div class="col-sm-3">
+				Jane Doe
+			</div>
+			<div class="col-sm-3">
+				<span class="account__info--title">Territory</span>
+			</div>
+			<div class="col-sm-3 no-padding" dropdown>
+				<button id="single-button" type="button" class="btn umg__button--lists" dropdownToggle>
+	            Global <i class="fa fa-chevron-down" aria-hidden="true"></i>
+	        </button>
+				<ul dropdownMenu role="menu" aria-labelledby="single-button">
+					<li *ngFor="let list of lists; let i = index" role="menuitem" data-option data-value="genre">
+						<a class="dropdown-item" href="#/list/">territory</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3">
+				<span class="account__info--title">Email</span>
+			</div>
+			<div class="col-sm-3">
+				janedoe@janedoe.com
+			</div>
+			<div class="col-sm-3">
+				<span class="account__info--title">SAP Label</span>
+			</div>
+			<div class="col-sm-3 no-padding" dropdown>
+				<button id="single-button" type="button" class="btn umg__button--lists" dropdownToggle>
+							All <i class="fa fa-chevron-down" aria-hidden="true"></i>
+					</button>
+				<ul dropdownMenu role="menu" aria-labelledby="single-button">
+					<li *ngFor="let list of lists; let i = index" role="menuitem" data-option data-value="genre">
+						<a class="dropdown-item" href="#/list/">label</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="account--title center-block">
+			<h3 class="thin">Notifications and Alerts</h3>
+		</div>
+	</div>
+	<div class="account__info center-block">
+		<div class="row">
+			<div class="col-sm-12">
+				<span class="account__info--title">Email Notifications</span>
+			</div>
+			<div class="col-sm-12">
+				<ul>
+					<li><input class="account__info--check-box" type="checkbox">UMG Global Data & Analytics Newsletter</li>
+					<li><input class="account__info--check-box" type="checkbox">Email Alerts (i.e. When watchlist items surpass benchmarks)</li>
+					<li><input class="account__info--check-box" type="checkbox">Global Priorities Monthly</li>
+				</ul>
+			</div>
+			<div class="col-sm-12">
+				<span class="account__info--title">Watchlist Subscriptions</span>
+			</div>
+			<div class="col-sm-12">
+				<ul>
+					<li>November 2016. weekly. ends 2017-03-10.<span class="account__unsubscribe"> unsubscribe</span></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

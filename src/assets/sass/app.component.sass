@@ -1,0 +1,161 @@
+@import 'variables'
+@import 'buttons'
+@import 'tables'
+@import 'helpers'
+
+html
+	font-size: 16px
+	line-height: 1.25em
+
+html, body
+  height: 100%
+  font-family: $baseFont
+  margin: 0
+  background-color: $bgColor
+  color: #ffffff
+  font-weight: 100
+
+.app-content
+  min-height: 100%
+  router-outlet
+    padding-bottom: 150px
+  padding-bottom: 150px
+
+h2
+  font-weight: 100
+h3
+  font-weight: 300
+  margin: 0
+a,
+a.link,
+a.visited
+	text-decoration: none
+	color: #ffffff
+
+a:hover
+	text-decoration: none
+	color: #FFF
+
+ul,
+ol
+	list-style: none
+	margin: 0
+	padding: 0
+
+.header
+  width: 100%
+  min-height: 5.938em
+  background: $headerBackground
+  display: block
+  margin: 0
+
+.filter
+	background: #000
+	display: block
+	position: relative
+	&>.container
+		padding: 2.844rem 0
+		@media(max-width: 767px)
+      padding: 0.5rem 0 !important
+      padding-top: 1rem !important
+
+span.active
+  background-color: gray
+
+//Forms
+textarea:focus,
+input:focus,
+button:focus,
+    outline: none !important
+    border: 1px solid #64c3fc
+
+footer
+  .footer__content
+    background-color: #191C1F
+    position: relative
+    bottom: 0
+    left: 0
+    margin-top: -150px
+    padding: 2rem 2.75rem 2rem 2.75rem
+    color: #ccc
+
+.header__sub-header
+	background-color: #121416
+	text-align: center
+	padding: 2.75rem
+	color: #60B9EF
+	font-size: 1.65rem
+
+.account
+  color: #cccccc
+  ul
+    li
+      padding: 0.5rem
+      input[type=checkbox]
+        margin-right: 1rem
+
+.account--title
+  margin: 1rem auto
+  padding: 1rem
+  width: 50%
+  border-bottom: 1px solid #363B45
+
+.account__info
+  background-color: #22252B
+  margin: 1rem auto
+  padding: 1rem
+  width: 50%
+  border: 1px solid #363B45
+  vertical-align: middle
+  .account__unsubscribe
+    color: $brandColor
+    &:hover
+      text-decoration: underline
+      cursor: pointer
+
+.account__info--title
+  color: #ffffff
+  font-size: 1.25rem
+  font-weight: 100
+
+//ng-bootstrap tabs override
+
+.modal-content
+	width: 375px !important
+	margin: 0 auto
+
+.nav-tabs
+	border-bottom: 1px solid #363b45 !important
+
+.nav-tabs .nav-link
+  border: 1px solid $tableBorderColor !important
+  margin-right: 0.25rem
+  color: #808080
+  &:hover
+    color: #ffffff
+  @media(max-width: 1600px)
+    margin-right: 0.11rem
+		font-size: 0.88rem
+
+.nav-tabs .nav-link.active
+  background-color: #363B45 !important
+  border: 1px solid $tableBorderColor !important
+  color: #ffffff !important
+  &:hover
+    border: 1px solid $tableBorderColor !important
+    color: #ffffff !important
+    background-color: #363B45 !important
+
+.user__login
+  position: absolute
+  z-index: 9999
+  background-color: rgba(0,0,0,0.75)
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  text-align: center
+  display: flex
+  justify-content: center
+  align-items: center
+  transition: 0.1s

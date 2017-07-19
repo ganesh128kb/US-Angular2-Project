@@ -1,0 +1,468 @@
+<div *ngIf="!ready" class="loading">
+  <loader></loader>
+</div>
+<div *ngIf="ready && !sortedReports?.length > 0" class="text-center no-data">Sorry, there is no data for the selected filter combination. Please try a different one.</div>
+<div id="topPerformers" class="container-fluid" *ngIf="sortedReports?.length > 0">
+    <div class="topFive hidden-xs-down hidden-sm col-sm-12 col-md-12 col-lg-12">
+        <!-- <div class="row page__title">
+            <h1 class="col-sm-12 thin capitalize">Top Performing {{ BStype }}</h1>
+        </div> -->
+        <div class="topFive__box" *ngFor="let top of sortedReports | slice:0:5; let i = index;">
+            <div class="topFive__item">
+                <!-- <div class="topFive__img">
+                    <img src="{{ top5Image[i].thumbnail }}" />
+                </div> -->
+                <div *ngIf="BStype === 'artists' && top.artist">
+                <div class="topFive__img">
+                    <img *ngIf="top.artist.image" src="{{ top.artist.image }}" />
+                </div>
+                <div class="topFive__info">
+                    <div class="topFive__object">
+                        <h4 class="normal title">
+                            <span class="num">{{ i + 1 }}</span>
+                            <a class="navigateTo" (click)="navigateTo('/artist/'+top.artist.id)">
+                                {{ top.artist.name }}
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="topFive__numbers light row">
+                        <div class="col-sm-6 col-lg-6 no-padding no-wrap" ngbTooltip="{{ globals.artistTableHeaders[0].lastPeriod }}: {{ top.totals.adjustedUnits.previous | number : '1.0-0' }}">{{ globals.artistTableHeaders[0].thisPeriod }}
+                            <span *ngIf="top.totals.adjustedUnits.all > top.totals.adjustedUnits.previous && top.totals.adjustedUnits.previous != 0" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((top.totals.adjustedUnits.all - top.totals.adjustedUnits.previous) / (top.totals.adjustedUnits.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="top.totals.adjustedUnits.all < top.totals.adjustedUnits.previous" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((top.totals.adjustedUnits.all - top.totals.adjustedUnits.previous) / (top.totals.adjustedUnits.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="top.totals.adjustedUnits.all === top.totals.adjustedUnits.previous || top.totals.adjustedUnits.previous === 0" class="no-wrap">&ndash;</span>
+                        </div>
+                        <div class="col-sm-6 col-lg-6 no-padding text-right">{{ top.totals.adjustedUnits.all | number : '1.0-0' }}</div>
+                    </div>
+                </div>
+                </div>
+                <div *ngIf="BStype === 'projects' && top.project">
+                <div class="topFive__img">
+                    <img *ngIf="top.project.image" src="{{ top.project.image }}" />
+                </div>
+                <div class="topFive__info">
+                    <div class="topFive__object">
+                        <h4 class="light project"><span class="num">{{ i + 1 }}</span><a class="navigateTo" (click)="navigateTo('/artist/'+top.project.artist.id)">{{ top.project.artist.name }}</a></h4>
+                        <h4 class="thin title-two"><a class="navigateTo" (click)="navigateTo('/artist/'+top.project.artist.id+'/'+top.project.id)">{{ top.project.name }}</a></h4>
+                    </div>
+                    <div class="topFive__numbers light row">
+                        <div class="col-sm-6 col-lg-6 no-padding no-wrap" ngbTooltip="{{ globals.projectTableHeaders[0].lastPeriod }}: {{ top.totals.adjustedUnits.previous | number : '1.0-0' }}">{{ globals.projectTableHeaders[0].thisPeriod }}
+                            <span *ngIf="top.totals.adjustedUnits.all > top.totals.adjustedUnits.previous && top.totals.adjustedUnits.previous != 0" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((top.totals.adjustedUnits.all - top.totals.adjustedUnits.previous) / (top.totals.adjustedUnits.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="top.totals.adjustedUnits.all < top.totals.adjustedUnits.previous" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((top.totals.adjustedUnits.all - top.totals.adjustedUnits.previous) / (top.totals.adjustedUnits.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="top.totals.adjustedUnits.all === top.totals.adjustedUnits.previous || top.totals.adjustedUnits.previous === 0" class="no-wrap">&ndash;</span>
+                        </div>
+                        <div class="col-sm-6 col-lg-6 no-padding text-right">{{ top.totals.adjustedUnits.all | number : '1.0-0' }}</div>
+                    </div>
+                </div>
+                </div>
+                <div *ngIf="BStype === 'tracks' && top.track">
+                <div class="topFive__img">
+                    <img *ngIf="top.track.image != null"  src="{{ top.track.image }}" />
+                </div>
+                <div class="topFive__info">
+                    <div class="topFive__object">
+                        <!-- <span class="num">{{ i + 1 }}</span> -->
+                        <h4 class="light project"><span class="num">{{i + 1}}</span><a class="navigateTo" (click)="navigateTo('/artist/'+top.track.artist.id)">{{ top.track.artist.name }}</a></h4>
+                        <h4 class="thin title-two"><a class="navigateTo" (click)="navigateTo('/artist/'+top.track.artist.id+'/'+top.track.project.id+'/'+top.track.id)">{{ top.track.name }}</a></h4>
+                    </div>
+                    <div class="topFive__numbers light row">
+                        <div class="col-sm-6 col-lg-6 no-padding no-wrap" ngbTooltip="{{ globals.trackTableHeaders[0].lastPeriod }}: {{ top.totals.adjustedUnits.previous | number : '1.0-0' }}">{{ globals.trackTableHeaders[0].thisPeriod }}
+                            <span *ngIf="top.totals.adjustedUnits.all > top.totals.adjustedUnits.previous && top.totals.adjustedUnits.previous != 0" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((top.totals.adjustedUnits.all - top.totals.adjustedUnits.previous) / (top.totals.adjustedUnits.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="top.totals.adjustedUnits.all < top.totals.adjustedUnits.previous" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((top.totals.adjustedUnits.all - top.totals.adjustedUnits.previous) / (top.totals.adjustedUnits.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="top.totals.adjustedUnits.all === top.totals.adjustedUnits.previous || top.totals.adjustedUnits.previous === 0" class="no-wrap">&ndash;</span>
+                        </div>
+                        <div class="col-sm-6 col-lg-6 no-padding text-right">{{ top.totals.adjustedUnits.all | number : '1.0-0' }}</div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table__container" *ngIf="sortedReports?.length > 0">
+        <div class="row table__info">
+            <div class="col no-padding">
+                <h1 class="thin no-padding">Top Performing <span class="brand-color">{{ BStype }}</span></h1>
+            </div>
+            <div *ngIf="userData.revenue" class="col hidden-xs-down text-right date__info">
+                Revenue Toggle:
+            </div>
+            <table-buttons></table-buttons>
+        </div>
+        <table *ngIf="sortedReports[0].artist && BStype == 'artists'" class="umg__table umg__table--no-padding">
+            <thead>
+                <tr *ngFor="let x of globals.artistTableHeaders">
+                    <th>{{ x.number }}</th>
+                    <th>
+                        <a (click)="sortByArtistName()">{{ x.artistName }}
+                            <span *ngIf="sortService.sortedBy == 'artistname'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th><a (click)="sortByRTD()">{{ x.releaseToDate }}
+                            <span *ngIf="sortService.sortedBy == 'rtd'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th>
+                        <a (click)="sortByThisPeriod()">{{ x.thisPeriod }}
+                            <span *ngIf="sortService.sortedBy == 'thisperiod'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th>{{ x.variance }}</th>
+                    <th> <a (click)="sortPhysicalAlbums()" class="hidden-xs-down">
+                        {{ x.physicalAlbums }}
+                        <span *ngIf="sortService.sortedBy == 'physicalAlbums'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                            <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                        </span>
+                      </a>
+                    </th>
+                    <th> <a (click)="sortDigitalAlbums()" class="hidden-xs-down">
+                        {{ x.digitalAlbums }}
+                        <span *ngIf="sortService.sortedBy == 'digitalAlbums'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                            <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                        </span>
+                      </a>
+                    </th>
+                    <th> <a (click)="sortDigitalTracks()">
+                        {{ x.digitalTracks }}
+                        <span *ngIf="sortService.sortedBy == 'digitalTracks'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                            <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                        </span>
+                      </a>
+                    </th>
+                    <th> <a (click)="sortStreams()">
+                        {{ x.streams }}
+                        <span *ngIf="sortService.sortedBy == 'streams'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                            <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                        </span>
+                      </a>
+                    </th>
+                    <th class="hidden-xs-down" style="color:#A6D9E8;">physical<br/>albums</th>
+                    <th class="hidden-xs-down" style="color:#74D2E2;">digital<br/>albums</th>
+                    <th class="hidden-xs-down" style="color:#30C3E5;">digital<br/>tracks</th>
+                    <th class="hidden-xs-down" style="color:#1BAFEA;">streams</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <loaders-css [loader]="'ball-pulse'" [loaderClass]="'my-loader'"></loaders-css> -->
+                <tr *ngFor="let item of sortedReports; let i = index;">
+                    <td>{{ i + 1 }}</td>
+                    <td><a class="navigateTo" (click)="navigateTo('/artist/'+item.artist.id)">{{ item.artist.name }}</a></td>
+                    <td *ngIf="!globals.euroToggle">{{ item.totals.adjustedUnits.rtd | number : '1.0-0' }}</td>
+                    <td *ngIf="globals.euroToggle">&#8364; {{ item.totals.euro.rtd | number : '1.0-0' }}</td>
+                    <td *ngIf="!globals.euroToggle">{{ item.totals.adjustedUnits.all | number : '1.0-0' }}</td>
+                    <td *ngIf="globals.euroToggle" class="hidden-xs-down">&#8364; {{ item.totals.euro.all | number : '1.0-0' }}</td>
+                    <td>
+                        <div *ngIf="!globals.euroToggle" ngbTooltip="LP: {{ item.totals.adjustedUnits.previous | number : '1.0-0' }}">
+                            <span *ngIf="!item.totals.adjustedUnits.previous" class="no-wrap">&ndash;</span>
+                            <span *ngIf="item.totals.adjustedUnits.all > item.totals.adjustedUnits.previous && item.totals.adjustedUnits.previous != 0" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.totals.adjustedUnits.all - item.totals.adjustedUnits.previous) / (item.totals.adjustedUnits.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="item.totals.adjustedUnits.all < item.totals.adjustedUnits.previous" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.totals.adjustedUnits.all - item.totals.adjustedUnits.previous) / (item.totals.adjustedUnits.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="item.totals.adjustedUnits.all === item.totals.adjustedUnits.previous || item.totals.adjustedUnits.previous === 0" class="no-wrap">&ndash;</span>
+                        </div>
+                        <div *ngIf="globals.euroToggle" ngbTooltip="LP: {{ item.totals.euro.previous | number : '1.0-0' }}">
+                            <span *ngIf="!item.totals.euro.previous" class="no-wrap">&ndash;</span>
+                            <span *ngIf="item.totals.euro.all > item.totals.euro.previous && item.totals.euro.previous != 0" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.totals.euro.all - item.totals.euro.previous) / (item.totals.euro.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="item.totals.euro.all < item.totals.euro.previous" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.totals.euro.all - item.totals.euro.previous) / (item.totals.euro.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="item.totals.euro.all === item.totals.euro.previous || item.totals.euro.previous === 0" class="no-wrap">&ndash;</span>
+                        </div>
+                    </td>
+                    <td class="hidden-xs-down" *ngIf="!globals.euroToggle">{{ item.totals.units.physicalAlbums | number : '1.0-0' }}</td>
+                    <td class="hidden-xs-down" *ngIf="!globals.euroToggle">{{ item.totals.units.digitalAlbums | number : '1.0-0' }}</td>
+                    <td *ngIf="!globals.euroToggle">{{ item.totals.units.digitalTracks | number : '1.0-0' }}</td>
+                    <td *ngIf="!globals.euroToggle">{{ item.totals.units.streams | number : '1.0-0' }}</td>
+                    <td *ngIf="!globals.euroToggle" class="hidden-xs-down" style="color:#A6D9E8; font-weight: 300;">
+                        <div ngbTooltip="{{ item.physicalAlbums | number : '1.0-0' }}">
+                            {{ (( item.totals.adjustedUnits.physicalAlbums)/(item.totals.adjustedUnits.physicalAlbums + item.totals.adjustedUnits.digitalAlbums + item.totals.adjustedUnits.digitalTracks + item.totals.adjustedUnits.streams )) * 100 | number : '1.2-2' }}%
+                        </div>
+                    </td>
+                    <td *ngIf="!globals.euroToggle" class="hidden-xs-down" style="color:#74D2E2; font-weight: 300;">
+                        <div ngbTooltip="{{ item.digitalAlbums | number : '1.0-0' }}">
+                            {{ (( item.totals.adjustedUnits.digitalAlbums)/(item.totals.adjustedUnits.physicalAlbums + item.totals.adjustedUnits.digitalAlbums + item.totals.adjustedUnits.digitalTracks + item.totals.adjustedUnits.streams )) * 100 | number : '1.2-2' }}%
+                        </div>
+                    </td>
+                    <td *ngIf="!globals.euroToggle" class="hidden-xs-down" style="color:#30C3E5; font-weight: 300;">
+                        <div ngbTooltip="{{ item.digitalTracks | number : '1.0-0' }}">
+                            {{ (( item.totals.adjustedUnits.digitalTracks)/(item.totals.adjustedUnits.physicalAlbums + item.totals.adjustedUnits.digitalAlbums + item.totals.adjustedUnits.digitalTracks + item.totals.adjustedUnits.streams )) * 100 | number : '1.2-2' }}%
+                        </div>
+                    </td>
+                    <td *ngIf="!globals.euroToggle" class="hidden-xs-down" style="color:#1BAFEA; font-weight: 300;">
+                        <div ngbTooltip="{{ item.streams | number : '1.0-0' }}">
+                            {{ (( item.totals.adjustedUnits.streams)/(item.totals.adjustedUnits.physicalAlbums + item.totals.adjustedUnits.digitalAlbums + item.totals.adjustedUnits.digitalTracks + item.totals.adjustedUnits.streams )) * 100 | number : '1.2-2' }}%
+                        </div>
+                    </td>
+                    <td *ngIf="globals.euroToggle" class="hidden-xs-down">&#8364; {{ item.totals.euro.physicalAlbums | number : '1.0-0' }}</td>
+                    <td *ngIf="globals.euroToggle" class="hidden-xs-down">&#8364; {{ item.totals.euro.digitalAlbums | number : '1.0-0' }}</td>
+                    <td *ngIf="globals.euroToggle">&#8364; {{ item.totals.euro.digitalTracks | number : '1.0-0' }}</td>
+                    <td *ngIf="globals.euroToggle">&#8364; {{ item.totals.euro.streams | number : '1.0-0' }}</td>
+                    <td *ngIf="globals.euroToggle" class="hidden-xs-down" style="color:#A6D9E8; font-weight: 300;">
+                        <div ngbTooltip="{{ item.physicalAlbums | number : '1.0-0' }}">
+                            {{ (( item.totals.euro.physicalAlbums)/(item.totals.euro.physicalAlbums + item.totals.euro.digitalAlbums + item.totals.euro.digitalTracks + item.totals.euro.streams )) * 100 | number : '1.2-2' }}%
+                        </div>
+                    </td>
+                    <td *ngIf="globals.euroToggle" class="hidden-xs-down" style="color:#74D2E2; font-weight: 300;">
+                        <div ngbTooltip="{{ item.digitalAlbums | number : '1.0-0' }}">
+                            {{ (( item.totals.euro.digitalAlbums)/(item.totals.euro.physicalAlbums + item.totals.euro.digitalAlbums + item.totals.euro.digitalTracks + item.totals.euro.streams )) * 100 | number : '1.2-2' }}%
+                        </div>
+                    </td>
+                    <td *ngIf="globals.euroToggle" class="hidden-xs-down" style="color:#30C3E5; font-weight: 300;">
+                        <div ngbTooltip="{{ item.digitalTracks | number : '1.0-0' }}">
+                            {{ (( item.totals.euro.digitalTracks)/(item.totals.euro.physicalAlbums + item.totals.euro.digitalAlbums + item.totals.euro.digitalTracks + item.totals.euro.streams )) * 100 | number : '1.2-2' }}%
+                        </div>
+                    </td>
+                    <td *ngIf="globals.euroToggle" class="hidden-xs-down" style="color:#1BAFEA; font-weight: 300;">
+                        <div ngbTooltip="{{ item.streams | number : '1.0-0' }}">
+                            {{ (( item.totals.euro.streams)/(item.totals.euro.physicalAlbums + item.totals.euro.digitalAlbums + item.totals.euro.digitalTracks + item.totals.euro.streams )) * 100 | number : '1.2-2' }}%
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="sortedReports[0].track && BStype === 'tracks'">
+        <table class="umg__table umg__table--no-padding">
+            <thead>
+                <tr *ngFor="let x of globals.trackTableHeaders">
+                    <th>{{ x.number }}</th>
+                    <th>
+                        <a (click)="sortByTrackArtistName()" style="font-weight: 400;">{{ x.artistName }}
+                            <span *ngIf="sortService.sortedBy == 'artistname'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th>
+                        <a (click)="sortByTrackName()">{{ x.trackName }}
+                            <span *ngIf="sortService.sortedBy == 'trackname'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <!-- <th>{{ x.label }}</th> -->
+                    <th>Release Date</th>
+                    <th>
+                        <a (click)="sortByRTD()">{{ x.releaseToDate }}
+                            <span *ngIf="sortService.sortedBy == 'rtd'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th>
+                        <a (click)="sortByThisPeriod()">{{ x.thisPeriod }}
+                            <span *ngIf="sortService.sortedBy == 'thisperiod'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th>{{ x.variance }}</th>
+                    <th>
+                        <a (click)="sortDigitalTracks()">{{ x.trackSales }}
+                            <span *ngIf="sortService.sortedBy == 'digitalTracks'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th>
+                        <a (click)="sortStreams()">{{ x.streamsTotal }}
+                            <span *ngIf="sortService.sortedBy == 'streams'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th>
+                        <a (click)="sortAudioStreams()">{{ x.audioStreams }}
+                            <span *ngIf="sortService.sortedBy == 'audioStreams'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <!-- <th>
+                        <a (click)="sortVideoStreams()">{{ x.videoStreams }}
+                            <span *ngIf="sortService.sortedBy == 'videoStreams'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of sortedReports; let i = index;">
+                    <td>{{i + 1}}</td>
+                    <td><a class="navigateTo" (click)="navigateTo('/artist/'+item.track.artist.id)">{{ item.track.artist.name }}</a></td>
+                    <td><a class="navigateTo" (click)="navigateTo('/artist/'+item.track.artist.id+'/'+item.track.project.id+'/'+item.track.id)">{{ item.track.name }}</a></td>
+                    <!-- <td>{{ item.label }}</td> -->
+                    <td>{{ item.track.earliestReleaseDate | date:'yyyy-MM-dd' }}</td>
+                    <td *ngIf="!globals.euroToggle">{{ item.totals.adjustedUnits.rtd | number : '1.0-0' }}</td>
+                    <td *ngIf="globals.euroToggle">&#8364; {{ item.totals.euro.rtd | number : '1.0-0' }}</td>
+                    <td *ngIf="!globals.euroToggle">{{ item.totals.adjustedUnits.all | number : '1.0-0' }}</td>
+                    <td *ngIf="globals.euroToggle" class="hidden-xs-down">&#8364; {{ item.totals.euro.all | number : '1.0-0' }}</td>
+                    <td>
+                        <div *ngIf="!globals.euroToggle" ngbTooltip="LP: {{ item.totals.adjustedUnits.previous | number : '1.0-0' }}">
+                            <span *ngIf="!item.totals.adjustedUnits.previous" class="no-wrap">&ndash;</span>
+                            <span *ngIf="item.totals.adjustedUnits.all > item.totals.adjustedUnits.previous && item.totals.adjustedUnits.previous != 0" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.totals.adjustedUnits.all - item.totals.adjustedUnits.previous) / (item.totals.adjustedUnits.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="item.totals.adjustedUnits.all < item.totals.adjustedUnits.previous" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.totals.adjustedUnits.all - item.totals.adjustedUnits.previous) / (item.totals.adjustedUnits.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="item.totals.adjustedUnits.all === item.totals.adjustedUnits.previous || item.totals.adjustedUnits.previous === 0" class="no-wrap">&ndash;</span>
+                        </div>
+                        <div *ngIf="globals.euroToggle" ngbTooltip="LP: {{ item.totals.euro.previous | number : '1.0-0' }}">
+                            <span *ngIf="!item.totals.euro.previous" class="no-wrap">&ndash;</span>
+                            <span *ngIf="item.totals.euro.all > item.totals.euro.previous && item.totals.euro.previous != 0" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.totals.euro.all - item.totals.euro.previous) / (item.totals.euro.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="item.totals.euro.all < item.totals.euro.previous" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.totals.euro.all - item.totals.euro.previous) / (item.totals.euro.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="item.totals.euro.all === item.totals.euro.previous || item.totals.euro.previous === 0" class="no-wrap">&ndash;</span>
+                        </div>
+                    </td>
+                    <td *ngIf="!globals.euroToggle">{{ item.totals.adjustedUnits.digitalTracks | number : '1.0-0' }}</td>
+                    <td *ngIf="!globals.euroToggle">{{ item.totals.adjustedUnits.streams | number : '1.0-0' }}</td>
+                    <td *ngIf="!globals.euroToggle">{{ item.totals.adjustedUnits.audioStreams | number : '1.0-0' }}</td>
+                    <!-- <td *ngIf="!globals.euroToggle">{{ item.totals.adjustedUnits.videoStreams | number : '1.0-0' }}</td> -->
+                    <td *ngIf="globals.euroToggle">&#8364; {{ item.totals.euro.digitalTracks | number : '1.0-0' }}</td>
+                    <td *ngIf="globals.euroToggle">&#8364; {{ item.totals.euro.streams | number : '1.0-0' }}</td>
+                    <td *ngIf="globals.euroToggle">&#8364; {{ item.totals.euro.audioStreams | number : '1.0-0' }}</td>
+                    <!-- <td *ngIf="globals.euroToggle">&#8364; {{ item.totals.euro.videoStreams | number : '1.0-0' }}</td> -->
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        <div *ngIf="sortedReports[0].project && BStype === 'projects'">
+        <table class="umg__table umg__table--no-padding">
+            <thead>
+                <tr *ngFor="let x of globals.projectTableHeaders">
+                    <th>{{ x.number }}</th>
+                    <th>
+                        <a (click)="sortByProjectArtistName()" style="font-weight: 400;">{{ x.artistName }}
+                            <span *ngIf="sortService.sortedBy == 'artistname'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th>
+                        <a (click)="sortByProjectName()">{{ x.projectName }}
+                            <span *ngIf="sortService.sortedBy == 'trackname'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th>Release Date</th>
+                    <th>
+                        <a (click)="sortByRTD()">{{ x.releaseToDate }}
+                            <span *ngIf="sortService.sortedBy == 'rtd'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th>
+                        <a (click)="sortByThisPeriod()">{{ x.thisPeriod }}
+                            <span *ngIf="sortService.sortedBy == 'thisperiod'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th>{{ x.variance }}</th>
+                    <th style="color:#A6D9E8;">
+                        <a (click)="sortPhysicalAlbums()">{{ x.physicalAlbums }}
+                            <span *ngIf="sortService.sortedBy == 'physicalAlbums'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th style="color:#74D2E2;">
+                        <a (click)="sortDigitalAlbums()">{{ x.digitalAlbums }}
+                            <span *ngIf="sortService.sortedBy == 'digitalAlbums'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th style="color:#30C3E5;">
+                        <a (click)="sortDigitalTracks()">{{ x.digitalTracks }}
+                            <span *ngIf="sortService.sortedBy == 'digitalTracks'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                    <th style="color:#1BAFEA;">
+                        <a (click)="sortStreams()">{{ x.streams }}
+                            <span *ngIf="sortService.sortedBy == 'streams'"><i *ngIf="sortService.ascending == false" class="fa fa-caret-down" aria-hidden="true"></i>
+                                <i *ngIf="sortService.ascending == true" class="fa fa-caret-up" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of sortedReports; let i = index;">
+                    <td>{{ i + 1 }}</td>
+                    <td><a class="navigateTo" (click)="navigateTo('/artist/'+item.project.artist.id)">{{ item.project.artist.name }}</a></td>
+                    <td><a class="navigateTo" (click)="navigateTo('/artist/'+item.project.artist.id+'/'+item.project.id)">{{ item.project.name }}</a></td>
+                    <td>{{ item.project.releaseDate | date:'yyyy-MM-dd' }}</td>
+                    <td *ngIf="!globals.euroToggle">{{ item.totals.adjustedUnits.rtd | number : '1.0-0' }}</td>
+                    <td *ngIf="globals.euroToggle">&#8364; {{ item.totals.euro.rtd | number : '1.0-0' }}</td>
+                    <td *ngIf="!globals.euroToggle">{{ item.totals.adjustedUnits.all | number : '1.0-0' }}</td>
+                    <td *ngIf="globals.euroToggle" class="hidden-xs-down">&#8364; {{ item.totals.euro.all | number : '1.0-0' }}</td>
+                    <td>
+                      <div *ngIf="!globals.euroToggle" ngbTooltip="LP: {{ item.totals.adjustedUnits.previous | number : '1.0-0' }}">
+                          <span *ngIf="!item.totals.adjustedUnits.previous" class="no-wrap">&ndash;</span>
+                          <span *ngIf="item.totals.adjustedUnits.all > item.totals.adjustedUnits.previous && item.totals.adjustedUnits.previous != 0" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.totals.adjustedUnits.all - item.totals.adjustedUnits.previous) / (item.totals.adjustedUnits.previous)) * 100 | number : '1.1-1' }}%</span>
+                          <span *ngIf="item.totals.adjustedUnits.all < item.totals.adjustedUnits.previous" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.totals.adjustedUnits.all - item.totals.adjustedUnits.previous) / (item.totals.adjustedUnits.previous)) * 100 | number : '1.1-1' }}%</span>
+                          <span *ngIf="item.totals.adjustedUnits.all === item.totals.adjustedUnits.previous || item.totals.adjustedUnits.previous === 0" class="no-wrap">&ndash;</span>
+                      </div>
+                        <div *ngIf="globals.euroToggle" ngbTooltip="LP: {{ item.totals.euro.previous | number : '1.0-0' }}">
+                            <span *ngIf="!item.totals.euro.previous" class="no-wrap">&ndash;</span>
+                            <span *ngIf="item.totals.euro.all > item.totals.euro.previous && item.totals.euro.previous != 0" class="diff-up no-wrap"><i class="fa fa-caret-up" aria-hidden="true"></i>{{ ((item.totals.euro.all - item.totals.euro.previous) / (item.totals.euro.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="item.totals.euro.all < item.totals.euro.previous" class="diff-down no-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i>{{ ((item.totals.euro.all - item.totals.euro.previous) / (item.totals.euro.previous)) * 100 | number : '1.1-1' }}%</span>
+                            <span *ngIf="item.totals.euro.all === item.totals.euro.previous || item.totals.euro.previous === 0" class="no-wrap">&ndash;</span>
+                        </div>
+                    </td>
+                    <td *ngIf="!globals.euroToggle" style="color:#A6D9E8; font-weight: 300;">
+                        <div ngbTooltip="{{ (( item.totals.adjustedUnits.physicalAlbums)/(item.totals.adjustedUnits.physicalAlbums + item.totals.adjustedUnits.digitalAlbums + item.totals.adjustedUnits.digitalTracks + item.totals.adjustedUnits.streams )) * 100 | number : '1.2-2' }}%">
+                            {{ item.totals.adjustedUnits.physicalAlbums | number : '1.0-0' }}
+                        </div>
+                    </td>
+                    <td *ngIf="!globals.euroToggle" style="color:#74D2E2; font-weight: 300;">
+                        <div ngbTooltip="{{ (( item.totals.adjustedUnits.digitalAlbums)/(item.totals.adjustedUnits.physicalAlbums + item.totals.adjustedUnits.digitalAlbums + item.totals.adjustedUnits.digitalTracks + item.totals.adjustedUnits.streams )) * 100 | number : '1.2-2' }}%">
+                            {{ item.totals.adjustedUnits.digitalAlbums | number : '1.0-0' }}
+                        </div>
+                    </td>
+                    <td *ngIf="!globals.euroToggle" style="color:#30C3E5; font-weight: 300;">
+                        <div ngbTooltip="{{ (( item.totals.adjustedUnits.digitalTracks)/(item.totals.adjustedUnits.physicalAlbums + item.totals.adjustedUnits.digitalAlbums + item.totals.adjustedUnits.digitalTracks + item.totals.adjustedUnits.streams )) * 100 | number : '1.2-2' }}%">
+                            {{ item.totals.adjustedUnits.digitalTracks | number : '1.0-0' }}
+                        </div>
+                    </td>
+                    <td *ngIf="!globals.euroToggle" style="color:#1BAFEA; font-weight: 300;">
+                        <div ngbTooltip="{{ (( item.totals.adjustedUnits.streams)/(item.totals.adjustedUnits.physicalAlbums + item.totals.adjustedUnits.digitalAlbums + item.totals.adjustedUnits.digitalTracks + item.totals.adjustedUnits.streams )) * 100 | number : '1.2-2' }}%">
+                            {{ item.totals.adjustedUnits.streams | number : '1.0-0' }}
+                        </div>
+                    </td>
+
+                    <td *ngIf="globals.euroToggle" style="color:#A6D9E8; font-weight: 300;">
+                        <div ngbTooltip="{{ (( item.totals.euro.physicalAlbums)/(item.totals.euro.physicalAlbums + item.totals.euro.digitalAlbums + item.totals.adjustedUnits.euro + item.totals.euro.streams )) * 100 | number : '1.2-2' }}%">
+                            &#8364; {{ item.totals.euro.physicalAlbums | number : '1.0-0' }}
+                        </div>
+                    </td>
+                    <td *ngIf="globals.euroToggle" style="color:#74D2E2; font-weight: 300;">
+                        <div ngbTooltip="{{ (( item.totals.euro.digitalAlbums)/(item.totals.euro.physicalAlbums + item.totals.euro.digitalAlbums + item.totals.adjustedUnits.euro + item.totals.euro.streams )) * 100 | number : '1.2-2' }}%">
+                            &#8364; {{ item.totals.euro.digitalAlbums | number : '1.0-0' }}
+                        </div>
+                    </td>
+                    <td *ngIf="globals.euroToggle" style="color:#30C3E5; font-weight: 300;">
+                        <div ngbTooltip="{{ (( item.totals.euro.digitalTracks)/(item.totals.euro.physicalAlbums + item.totals.euro.digitalAlbums + item.totals.adjustedUnits.euro + item.totals.euro.streams )) * 100 | number : '1.2-2' }}%">
+                            &#8364; {{ item.totals.euro.digitalTracks | number : '1.0-0' }}
+                        </div>
+                    </td>
+                    <td *ngIf="globals.euroToggle" style="color:#1BAFEA; font-weight: 300;">
+                        <div ngbTooltip="{{ (( item.totals.euro.streams)/(item.totals.euro.physicalAlbums + item.totals.euro.digitalAlbums + item.totals.euro.digitalTracks + item.totals.euro.streams )) * 100 | number : '1.2-2' }}%">
+                            &#8364; {{ item.totals.euro.streams | number : '1.0-0' }}
+                        </div>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+      </div>
+      <div id="viewMore">
+        <div *ngIf="sortedReports?.length > 25" class="col-sm-12 text-center view-more" (click)="showLessData()"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>
+        <div *ngIf="sortedReports?.length >= 25 && sortedReports?.length != 500" class="col-sm-12 text-center view-more" (click)="showMoreData()"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>
+        <div *ngIf="BStype != 'tracks'"class="data-disclaimer col">** <strong>RTD Units, TP Units:</strong> Adjusted album ratios. <strong>Media Type Units:</strong> Raw numbers. <strong>Media Type Percentages:</strong> Adjusted album ratios.</div>
+        <div *ngIf="BStype ==='tracks'"class="data-disclaimer col">** <strong>RTD Units, TP Units:</strong> Adjusted track ratios. <strong>Media Type Units:</strong> Raw numbers.</div>
+      </div>
+    </div>
+</div>

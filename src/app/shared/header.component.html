@@ -1,0 +1,115 @@
+<header>
+    <div class="container-fluid">
+        <div class="row">
+            <div ngbDropdown class="d-inline-block col-sm-3 mobile__logo">
+                <button class="btn btn-outline-primary filter__btn" id="appToggle" class="header__logo" ngbDropdownToggle>
+              <h2><i class="fa fa-headphones" aria-hidden="true"></i>&nbsp;&nbsp;<span class="medium">UMG</span><span class="thin"> | Swift Consumption &nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i></span></h2>
+            </button>
+                <div class="dropdown-menu" aria-labelledby="appToggle">
+                    <div class="dropdown-menu-custom-logo">
+                        <div class="dropdown-item">
+                            <a class="swift--brand"><i class="fa fa-line-chart" aria-hidden="true"></i>&nbsp;&nbsp;<span class="medium">UMG</span><span class="thin"> | Swift Trends</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav class="header__nav col-xs-12 col-sm-1 col-md-5 col-lg-4" id="navbar">
+                <ul class="nav header__nav--main">
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #757678;">Home</a>
+                    </li>
+                    <li [class.active]="fs.BStype === 'artists' && fs.bs  || fs.artistInit" class="nav-item">
+                        <a class="navigateTo" (click)="navigateTo('/bestsellers/artists')" class="nav-link">Artists</a>
+                    </li>
+                    <li [class.active]="fs.BStype === 'projects' && fs.bs  || fs.projectInit" class="nav-item">
+                        <a class="navigateTo" (click)="navigateTo('/bestsellers/projects')" class="nav-link">Projects</a>
+                    </li>
+                    <li [class.active]="fs.BStype === 'tracks' && fs.bs || fs.trackInit" class="nav-item">
+                        <a class="navigateTo" (click)="navigateTo('/bestsellers/tracks')" class="nav-link">Tracks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #757678;">Lists</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="dropdown-nav col-sm-12">
+                <button type="button" class="menu__btn col-sm-12" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">Menu <i class="fa fa-angle-down" aria-hidden="true"></i>
+            </button>
+                <div id="collapseExample" [ngbCollapse]="isCollapsed" class="col-xs-12 dropdown--collapse no-padding">
+                    <div class="well-lg">
+                        <nav class="header__nav col-sm-12 no-padding" id="navbar">
+                            <ul class="nav col-12 no-padding">
+                              <li class="nav-item col-12 col-lg-2 no-padding">
+                                  <a class="nav-link" style="color: #757678;">Home</a>
+                              </li>
+                              <li [class.active]="fs.BStype === 'artists' && fs.bs  || fs.artistInit" class="nav-item col-12 col-lg-2 no-padding" (click)="isCollapsed = !isCollapsed">
+                                  <a class="navigateTo" (click)="navigateTo('/bestsellers/artists')" class="nav-link">Artists</a>
+                              </li>
+                              <li [class.active]="fs.BStype === 'projects' && fs.bs  || fs.projectInit" class="nav-item col-12 col-lg-2 no-padding" (click)="isCollapsed = !isCollapsed">
+                                  <a class="navigateTo" (click)="navigateTo('/bestsellers/projects')" class="nav-link">Projects</a>
+                              </li>
+                              <li [class.active]="fs.BStype === 'tracks' && fs.bs || fs.trackInit" class="nav-item col-12 col-lg-2 no-padding" (click)="isCollapsed = !isCollapsed">
+                                  <a class="navigateTo" (click)="navigateTo('/bestsellers/tracks')" class="nav-link">Tracks</a>
+                              </li>
+                              <li class="nav-item col-12 col-lg-2 no-padding">
+                                  <a class="nav-link" style="color: #757678;">Lists</a>
+                              </li>
+                                <li class="nav-item col-12 col-lg-2 no-padding" style="border-top: 1px solid #393e49">
+                                    <a class="nav-link" style="color: #757678;">Settings</a>
+                                </li>
+                                <li class="nav-item col-12 col-lg-2 no-padding" (click)="isCollapsed = !isCollapsed">
+                                    <a class="nav-link" href="https://swift-umusic.zendesk.com/hc/en-us/requests/new" target="_blank">Report Issue</a>
+                                </li>
+                                <li [class.active]="router.url === './docs'" class="nav-item col-12 col-lg-2 no-padding" (click)="isCollapsed = !isCollapsed">
+                                    <a class="nav-link" [routerLink]=" ['./docs'] ">FAQ</a>
+                                </li>
+                                <li class="nav-item col-12 col-lg-2 no-padding" (click)="isCollapsed = !isCollapsed">
+                                    <a class="nav-link" (click)="authService.logout()">Log Out</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="header__search col-xs-12 col-sm-8 col-md-4 col-lg-5">
+                <!-- <div class="hidden-sm-up row">
+                    <div class="col-xs-4 text-left inline">
+                        <button class="header__notif" placement="bottom" ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on bottom"><i class="notfi--icon">3</i></button>
+                    </div>
+                </div> -->
+                <div class="col-xs-12 col-md-9 inline">
+                    <div class="row">
+                        <div class="hidden-sm-down col-4">
+                            <button (click)="onToggleFilters()" class="header__filter--button umg__button" *ngIf="router.url != '/account' && router.url != '/login' && router.url != '/docs'"><span>Filters </span><i class="fa fa-filter" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="hidden-sm-up col-4">
+                            <button class="header__filter--button umg__button" *ngIf="router.url != '/account' && router.url != '/login' && router.url != '/docs'"><span>Filters </span><i class="fa fa-filter" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="col-8">
+                            <search></search>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden-xs-down col-md-2 inline">
+                    <div class="row">
+                        <div class="col-6">
+                            <button class="header__notif text-center" placement="bottom" ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on bottom"><i class="notfi--icon">0</i></button>
+                        </div>
+                        <div class="col-6">
+                            <div id="account__menu" ngbDropdown class="d-inline-block dropdown-menu-left">
+                                <button class="header__user" id="accountMenu" ngbDropdownToggle><i class="fa fa-user"></i></button>
+                                <div class="dropdown-menu dropdown-menu-left" aria-labelledby="accountMenu">
+                                    <div class="dropdown-item"><a href="https://swift-umusic.zendesk.com/hc/en-us/requests/new" target="_blank">Report Issue</a></div>
+                                    <div class="dropdown-item" [routerLink]=" ['./docs'] ">FAQ</div>
+                                    <div class="dropdown-item" style="color: #757678;">Settings</div>
+                                    <div class="dropdown-item" (click)="authService.logout()">Log Out</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<filter [shouldToggle]="toggle" class="filter"></filter>

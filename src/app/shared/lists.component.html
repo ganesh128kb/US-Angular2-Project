@@ -1,0 +1,204 @@
+<div class="row no-margin list-add">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-1 list-add__list-title text-right">
+        View List
+    </div>
+    <div class="col-sm-2 filter__btn--container">
+        <div ngbDropdown class="d-inline-block filter__dropdown" [open]="false">
+            <button class="btn filter__btn" id="genreFilterDropdown" ngbDropdownToggle>All Lists <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+            <div class="dropdown-menu" aria-labelledby="genreFilterDropdown">
+                <div *ngFor="let list of lists; let i = index">
+                    <div class="dropdown-item"><a href="#/list/{{list._id}}" style="padding-right: 1.5rem;">{{list.listName}}</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-1"></div>
+    <div class="col-sm-5 no-padding text-left">
+        <form class="listForm" (ngSubmit)="addList(addListGroup)" [formGroup]="addListGroup">
+            <input class="lt-text" type="text" formControlName="listName" placeholder="Create new list ...">
+            <button class="btn rt-btn list__add--btn" type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
+        </form>
+    </div>
+</div>
+<div class="lists container-fluid">
+    <div class="table__container col-sm-12" *ngFor="let list of lists; let i = index;">
+        <div class="row list__info">
+            <div class="col">
+                <h1 class="inline thin">{{list.listName}}</h1>
+                <a href="#/list/{{list._id}}" class="lists__goto"> go to list <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+            </div>
+            <div class="col text-right">
+                <div class="list__buttons">
+                    <button class="umg__button button--disabled">Share List <i class="fa fa-share" aria-hidden="true"></i></button>
+                    <button class="umg__button button--disabled">Export List <i class="fa fa-sign-out" aria-hidden="true"></i></button>
+                </div>
+                <div class="list__created--dates">
+                    <div class="list__created inline">
+                        <h5 class="inline">Created</h5>
+                        <span>{{ list.creationDate | date:'yyyy-MM-dd' }}</span>
+                    </div>
+                    <div class="list__modified inline">
+                        <h5 class="inline">Last Modified</h5>
+                        <span>{{ list.lastModifiedDate | date:'yyyy-MM-dd' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 list" *ngIf="list.artists.length != 0">
+            <h2>Artists</h2>
+            <table class="umg__table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>ARTIST</th>
+                        <th>RTD</th>
+                        <th>TW</th>
+                        <th>VAR</th>
+                        <th>PHYSICAL<br/>ALBUMS</th>
+                        <th>DIGITAL<br/>ALBUMS</th>
+                        <th>DIGITAL<br/>TRACKS</th>
+                        <th>STREAMS</th>
+                        <th style="color:#A6D9E8;">physical<br/>albums</th>
+                        <th style="color:#74D2E2;">digital<br/>albums</th>
+                        <th style="color:#30C3E5;">digital<br/>tracks</th>
+                        <th style="color:#1BAFEA;">streams</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of list.artists; let i = index;">
+                        <td>{{ i + 1 }}</td>
+                        <td><a href='#/artist/{{ item.canopusID }}'>{{ item.artistName }}</a></td>
+                        <td>{{ item.rtdConsump || item.releaseToDate | number : '1.0-0' }}</td>
+                        <td>{{ item.twConsump || item.thisWeek | number : '1.0-0' }}</td>
+                        <td>
+                            <span *ngIf="item.twConsump > item.lwConsump" class="diff-up"><i class="fa fa-caret-up" aria-hidden="true"></i> {{ ((item.twConsump - item.lwConsump) / (item.lwConsump)) * 100 | number : '1.2-2' }}%</span>
+                            <span *ngIf="item.twConsump < item.lwConsump" class="diff-down"><i class="fa fa-caret-down" aria-hidden="true"></i> {{ ((item.twConsump - item.lwConsump) / (item.lwConsump)) * 100 | number : '1.2-2' }}%</span>
+                            <span *ngIf="item.twConsump === item.lwConsump"> --</span>
+                        </td>
+                        <td>{{ item.physicalAlbums | number : '1.0-0' }}</td>
+                        <td>{{ item.digitalAlbums | number : '1.0-0' }}</td>
+                        <td>{{ item.digitalTracks | number : '1.0-0' }}</td>
+                        <td>{{ item.streams | number : '1.0-0' }}</td>
+                        <td style="color:#A6D9E8; font-weight: 300;">
+                            <div ngbTooltip="{{ item.physicalAlbums | number : '1.0-0' }}">
+                                {{ (( item.physicalAlbums)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                            </div>
+                        </td>
+                        <td style="color:#74D2E2; font-weight: 300;">
+                            <div ngbTooltip="{{ item.digitalAlbums | number : '1.0-0' }}">
+                                {{ (( item.digitalAlbums)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                            </div>
+                        </td>
+                        <td style="color:#30C3E5; font-weight: 300;">
+                            <div ngbTooltip="{{ item.digitalTracks | number : '1.0-0' }}">
+                                {{ (( item.digitalTracks)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                            </div>
+                        </td>
+                        <td style="color:#1BAFEA; font-weight: 300;">
+                            <div ngbTooltip="{{ item.streams | number : '1.0-0' }}">
+                                {{ (( item.streams)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-12 list" *ngIf="list.projects.length != 0">
+            <h2>Projects</h2>
+            <div>
+                <table class="umg__table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ARTIST</th>
+                            <th>PROJECT<br/>NAME</th>
+                            <th>LABEL</th>
+                            <th>RELEASE<br/>DATE</th>
+                            <th>TW</th>
+                            <th>RTD</th>
+                            <th style="color:#A6D9E8;">physical<br/>albums</th>
+                            <th style="color:#74D2E2;">digital<br/>albums</th>
+                            <th style="color:#30C3E5;">digital<br/>tracks</th>
+                            <th style="color:#1BAFEA;">streams</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of list.projects; let i = index;">
+                            <td>{{ i + 1 }}</td>
+                            <td><a href='#/artist/{{ item.canopusID }}'>{{ item.artistName }}</a></td>
+                            <td><a href='#/artist/{{ item.canopusID }}/{{ item.projectID }}'>{{ item.projectName }}</a></td>
+                            <td>{{ item.label }}</td>
+                            <td>{{ item.releaseDate | date:'yyyy-MM-dd' }}</td>
+                            <td>{{ item.thisWeek }}</td>
+                            <td>{{ item.releaseToDate }}</td>
+                            <td style="color:#A6D9E8; font-weight: 300;">
+                                <div ngbTooltip="{{ item.physicalAlbums | number : '1.0-0' }}">
+                                    {{ (( item.physicalAlbums)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                                </div>
+                            </td>
+                            <td style="color:#74D2E2; font-weight: 300;">
+                                <div ngbTooltip="{{ item.digitalAlbums | number : '1.0-0' }}">
+                                    {{ (( item.digitalAlbums)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                                </div>
+                            </td>
+                            <td style="color:#30C3E5; font-weight: 300;">
+                                <div ngbTooltip="{{ item.digitalTracks | number : '1.0-0' }}">
+                                    {{ (( item.digitalTracks)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                                </div>
+                            </td>
+                            <td style="color:#1BAFEA; font-weight: 300;">
+                                <div ngbTooltip="{{ item.streams | number : '1.0-0' }}">
+                                    {{ (( item.streams)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-xs-12 list" *ngIf="list.tracks.length != 0">
+            <h2>Tracks</h2>
+            <div>
+                <table class="umg__table umg__table--tracks">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ARTIST</th>
+                            <th>TITLE</th>
+                            <th>LABEL</th>
+                            <th>RELEASE DATE</th>
+                            <th>RTD</th>
+                            <th>TW</th>
+                            <th>VAR</th>
+                            <th>TRACK SALES</th>
+                            <th>STREAMS TOTAL</th>
+                            <th>AUDIO STREAMS</th>
+                            <th>VIDEO STREAMS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of list.tracks; let i = index;">
+                            <td>{{i + 1}}</td>
+                            <td><a href='#/artist/{{ item.canopusID }}'>{{ item.artistName }}</a></td>
+                            <td><a href='#/artist/{{ item.canopusID }}/{{ item.projectID }}/{{ item.isrc }}'>{{ item.name || item.trackName }}</a></td>
+                            <td>{{ item.label }}</td>
+                            <td>{{ item.releaseDate | date:'yyyy-MM-dd' }}</td>
+                            <td>{{ item.rtdConsump | number : '1.0-0' }}</td>
+                            <td>{{ item.twConsump | number : '1.0-0' }}</td>
+                            <td>
+                                <span *ngIf="item.twConsump > item.lwConsump" class="diff-up"><i class="fa fa-caret-up" aria-hidden="true"></i> {{ ((item.twConsump - item.lwConsump) / (item.lwConsump)) * 100 | number : '1.1-1' }}%</span>
+                                <span *ngIf="item.twConsump < item.lwConsump" class="diff-down"><i class="fa fa-caret-down" aria-hidden="true"></i> {{ ((item.twConsump - item.lwConsump) / (item.lwConsump)) * 100 | number : '1.1-1' }}%</span>
+                                <span *ngIf="item.twConsump === item.lwConsump"> --</span>
+                            </td>
+                            <td>{{ item.trackSales | number : '1.0-0' }}</td>
+                            <td>{{ item.streamsTotal | number : '1.0-0' }}</td>
+                            <td>{{ item.audioStreams | number : '1.0-0' }}</td>
+                            <td>{{ item.videoStreams | number : '1.0-0' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

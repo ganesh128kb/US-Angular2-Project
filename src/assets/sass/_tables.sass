@@ -1,0 +1,147 @@
+.table__info
+	margin: 3.438rem 0 1rem
+	padding: 0
+	text-transform: capitalize
+
+.table__container
+  font-weight: 100
+  padding: 0 1.5rem
+  .list__created, .list__modified
+    color: #cccccc
+  th
+    word-wrap: break-word
+  @media (max-width: 768px)
+    padding: 0
+    margin-top: -2rem
+
+lists
+  .container-fluid
+    padding-left: 0
+    padding-right: 0
+
+.lists
+	.table__container
+		padding: 3rem 1.5rem 5rem 1.5rem !important
+		font-weight: 100
+		margin: 0
+		&:nth-child(odd)
+		  background-color: #22252B
+
+.list
+	.table__container
+		padding: 1.5rem
+		font-weight: 100
+		margin: 0
+		.umg__table
+			tbody
+				tr
+          td:nth-child(1)
+            &:hover, &:focus
+              background-color: #F73959
+              padding: 0 !important
+              margin: 0
+              font-size: 1.15rem
+              .trash
+                display: block
+              .no-trash
+                display: none
+            .trash
+              display: none
+
+#details__table--tracks
+  td
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none
+    user-select: none
+  .expanded-row
+    background-color: #22252b !important
+    td
+      padding-top: 0.3rem
+      padding-bottom: 0.3rem
+    td:nth-child(2)
+      padding-left: 2rem
+  .fa-caret-right, .fa-caret-down
+    font-size: 1rem
+		margin: 0
+  .fa-caret-right
+    padding-right: 0.70rem
+  .fa-caret-down
+    padding-right: 0.5rem
+
+#topPerformers
+  .umg__table
+    margin-bottom: 0 !important
+
+#viewMore
+  margin-bottom: 50px
+
+.umg__table
+  margin-bottom: 50px !important
+  width: 100%
+  font-size: 0.8rem
+  color: #cccccc
+  @media (max-width: 1200px)
+    display: inline-block
+    overflow-x: scroll
+    .mobile__fixed
+      position: absolute
+      width: 100px
+      left: 0
+      top: auto
+  a
+    color: #cccccc
+    &:hover
+      text-decoration: underline
+  td,
+  th
+    border: 1px solid #282c33
+    &:hover
+      cursor: default
+    a:hover
+      cursor: pointer
+      text-decoration: underline !important
+  th:first-child,
+  td:first-child
+    text-align: center
+  th
+    color: #ffffff
+  thead
+    tr
+      background-color: #2b3038 !important
+    th
+      font-weight: 300
+      padding: 1rem
+      text-transform: uppercase
+  tbody
+    tr
+      background-color: #2b3038 !important
+      &:nth-child(odd)
+        background-color: #31363f !important
+      &:hover
+        background-color: #3D434C !important
+    td
+      padding: 0.60rem 1rem
+
+.overview__table
+	table
+		width: 100%
+		background-color: #22252B
+		height: auto
+		border-left: 1px solid #363B45
+		border-bottom: 1px solid #363B45
+		border-right: 1px solid #363B45
+		border-collapse: collapse
+		td,
+		th
+			padding: 1.25rem
+			font-weight: 100
+		td
+			color: #cccccc
+		th
+			font-weight: 300
+		.mini-bar
+			margin: 0
+			padding: 10px 5px 20px 5px

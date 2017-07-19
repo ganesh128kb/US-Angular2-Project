@@ -1,0 +1,307 @@
+//../../../../../src/assets/sass/daterangepicker.sass - url to replace in node_modules/ng2-daterangepicker folder when npm is updated/over
+.daterangepicker
+  position: absolute
+  color: #fff
+  background: #363B45
+  border-radius: 0
+  width: 278px
+  padding: 4px
+  margin-top: 1px
+  top: 100px
+  left: 20px
+  box-shadow: 2px 2px 3px rgba(0,0,0,0.25)
+  /* Calendars
+  &:before, &:after
+    position: absolute
+    display: inline-block
+    border-bottom-color: rgba(0, 0, 0, 0.2)
+    content: ''
+  &:before
+    top: -7px
+    border-right: 0px solid transparent
+    border-left: 0px solid transparent
+    border-bottom: 0px solid #363B45
+  &:after
+    top: -6px
+    border-right: 0px solid transparent
+    border-bottom: 0px solid #363B45
+    border-left: 0px solid transparent
+  &.opensleft
+    &:before
+      right: 9px
+    &:after
+      right: 10px
+  &.openscenter
+    &:before, &:after
+      left: 0
+      right: 0
+      width: 0
+      margin-left: auto
+      margin-right: auto
+  &.opensright
+    &:before
+      left: 9px
+    &:after
+      left: 10px
+  &.dropup
+    margin-top: -5px
+    &:before
+      top: initial
+      bottom: -7px
+      border-bottom: initial
+      border-top: 7px solid #ccc
+    &:after
+      top: initial
+      bottom: -6px
+      border-bottom: initial
+      border-top: 6px solid #fff
+  &.dropdown-menu
+    max-width: none
+    z-index: 3001
+  &.single
+    .ranges, .calendar
+      float: none
+  &.show-calendar .calendar
+    display: block
+  .calendar
+    display: none
+    max-width: 270px
+    margin: 4px
+    &.single .calendar-table
+      border: none
+    th, td
+      white-space: nowrap
+      text-align: center
+      min-width: 32px
+  .calendar-table
+    border: 0px solid #fff
+    padding: 4px
+    border-radius: 0
+    background: #22252B
+  table
+    width: 100%
+    margin: 0
+  td, th
+    text-align: center
+    width: 20px
+    height: 20px
+    border-radius: 0
+    border: 1px solid transparent
+    white-space: nowrap
+    cursor: pointer
+  td.available:hover, th.available:hover
+    background-color: #4082A3
+    border-color: transparent
+    color: inherit
+  td.week, th.week
+    font-size: 80%
+    color: #ccc
+  td
+    &.off
+      background-color: #252930
+      border-color: transparent
+      color: #999
+      &.in-range, &.start-date, &.end-date
+        background-color: #31363F
+        border-color: transparent
+        color: #999
+    &.in-range
+      background-color: #60B9EF
+      border-color: transparent
+      color: #000
+      border-radius: 0
+    &.start-date
+      border-radius: 0
+    &.end-date
+      border-radius: 0
+    &.start-date.end-date
+      border-radius: 0
+    &.active
+      background-color: #4082A3
+      border-color: transparent
+      color: #fff
+      &:hover
+        background-color: #4082A3
+        border-color: transparent
+        color: #fff
+  th.month
+    width: auto
+    font-weight: 300
+  td.disabled, option.disabled
+    color: #999
+    cursor: not-allowed
+    text-decoration: line-through
+  select
+    &.monthselect, &.yearselect
+      font-size: 12px
+      padding: 1px
+      height: auto
+      margin: 0
+      cursor: default
+    &.monthselect
+      margin-right: 2%
+      width: 56%
+    &.yearselect
+      width: 40%
+    &.hourselect, &.minuteselect, &.secondselect, &.ampmselect
+      width: 50px
+      margin-bottom: 0
+  .input-mini
+    background: #22252B
+    border: 0px solid #ccc
+    border-radius: 4px
+    color: #B3B3B3
+    height: 30px
+    line-height: 30px
+    display: block
+    vertical-align: middle
+    margin: 0 0 5px 0
+    padding: 0 6px 0 28px
+    width: 100%
+    &.active
+      border: 0px solid #08c
+      border-radius: 4px
+  .daterangepicker_input
+    position: relative
+    background: #363B45
+    i
+      position: absolute
+      left: 8px
+      top: 8px
+  &.rtl
+    .input-mini
+      padding-right: 28px
+      padding-left: 6px
+    .daterangepicker_input i
+      left: auto
+      right: 8px
+  .calendar-time
+    text-align: center
+    margin: 5px auto
+    line-height: 30px
+    position: relative
+    padding-left: 28px
+    select.disabled
+      color: #ccc
+      cursor: not-allowed
+.btn-success, .btn-success[disabled]
+  background: #60B9EF
+  border-radius: 0
+  border: 0
+  width: 100%
+  margin: 0 3px 3px 3px
+  color: #1A1A1A
+  font-weight: 400
+  &:hover, &:active, &:focus, &:visited, &:active:focus
+    background: #4082A3
+    border: 0
+    font-weight: 400
+    margin: 0 3px 3px 3px
+
+.btn-default
+  background: #252930
+  border-radius: 0
+  border: 0
+  width: 100%
+  margin: 3px
+  color: #ccc
+  &:hover, &:active, &:focus, &:visited, &:active:focus
+    background: #252930
+    border: 0
+    color: #fff
+
+.ranges
+  font-size: 11px
+  float: none
+  margin: 4px
+  text-align: left
+  ul
+    list-style: none
+    margin: 0 auto
+    padding: 0
+    width: 100%
+  li
+    font-size: 13px
+    background: #f5f5f5
+    border: 0px solid #f5f5f5
+    border-radius: 4px
+    color: #08c
+    padding: 3px 12px
+    margin-bottom: 8px
+    cursor: pointer
+    &:hover, &.active
+      background: #08c
+      border: 0px solid #08c
+      color: #47CCE2
+
+/*  Larger Screen Styling
+@media (min-width: 564px)
+  .daterangepicker
+    width: auto
+    .ranges ul
+      width: 160px
+    &.single
+      .ranges ul
+        width: 100%
+      .calendar.left
+        clear: none
+      &.ltr
+        .ranges, .calendar
+          float: left
+      &.rtl
+        .ranges, .calendar
+          float: right
+    &.ltr
+      direction: ltr
+      text-align: left
+      .calendar
+        &.left
+          clear: left
+          margin-right: 0
+          .calendar-table
+            border-right: none
+            border-top-right-radius: 0
+            border-bottom-right-radius: 0
+        &.right
+          margin-left: 0
+          .calendar-table
+            border-left: none
+            border-top-left-radius: 0
+            border-bottom-left-radius: 0
+      .left .daterangepicker_input, .calendar.left .calendar-table
+        padding-right: 12px
+      .ranges, .calendar
+        float: left
+    &.rtl
+      direction: rtl
+      text-align: right
+      .calendar
+        &.left
+          clear: right
+          margin-left: 0
+          .calendar-table
+            border-left: none
+            border-top-left-radius: 0
+            border-bottom-left-radius: 0
+        &.right
+          margin-right: 0
+          .calendar-table
+            border-right: none
+            border-top-right-radius: 0
+            border-bottom-right-radius: 0
+      .left .daterangepicker_input, .calendar.left .calendar-table
+        padding-left: 12px
+      .ranges, .calendar
+        text-align: right
+        float: right
+
+@media (min-width: 730px)
+  .daterangepicker
+    .ranges
+      width: auto
+    &.ltr .ranges
+      float: left
+    &.rtl .ranges
+      float: right
+    .calendar.left
+      clear: none !important

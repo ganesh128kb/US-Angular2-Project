@@ -1,0 +1,10 @@
+{
+ "name": "AppComponent",
+ "icons": [
+  {
+   "src": "/assets/icon/fav.png",
+   "sizes": "32x32",
+   "type": "image/png"
+  }
+ ]
+}

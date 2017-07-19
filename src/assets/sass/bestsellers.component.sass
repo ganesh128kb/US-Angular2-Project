@@ -1,0 +1,99 @@
+@import 'common'
+@import 'helpers'
+
+.container-fluid
+  padding-top: 2rem
+  @media(max-width:768px)
+    padding-top: 0rem
+    margin-top: -2rem
+
+.table__info
+  @media(max-width: 768px)
+    h1
+      font-size: 1.50rem
+
+.txt-right
+  @media(min-width: 1200px)
+    text-align: right
+
+.data-disclaimer
+  font-size: 0.85rem
+  padding: 0.5rem 0 0.5rem 0
+
+.topFive
+	display: inline-block
+	padding: 0 1.5rem
+
+.topFive__box
+	display: inline-block
+	width: 20%
+	height: auto
+	padding: 0 1rem
+
+.topFive__item
+	background-color: #31363F
+	padding: 0
+	box-shadow: 2px 2px 3px rgba(0,0,0,0.25)
+
+.topFive__info
+  a:hover
+    cursor: pointer
+    text-decoration: underline
+  .topFive__numbers
+    &:hover
+      cursor: default
+
+.topFive__img
+	position: relative
+	width: 100%
+	//display: flex
+	overflow: hidden
+
+	&:after
+		content: ""
+		display: block
+		padding-bottom: 100%
+
+	img
+		object-fit: cover
+		position: absolute
+		padding: 5px
+		width: 100%
+		height: 100%
+		opacity: 0.9
+
+.topFive__object
+	padding: 10px 0
+	background-color: #2B3038
+
+	h4
+    text-overflow: ellipsis
+    overflow: hidden
+    white-space: nowrap
+
+	.title,
+	.project,
+	.track
+		font-size: 1.10rem
+		text-indent: 1.10rem
+		padding-right: 0.5rem
+
+	.title
+    text-indent: 1.10rem
+    padding-top: 0.5rem
+	.title-two
+		text-indent: 2.20rem
+
+	.num
+		color: #60B9EF
+		padding: 0
+		padding-right: 0.5rem
+		margin: 0
+		font-weight: 500
+
+.topFive__numbers
+	padding: 1rem 2rem
+	color: #B3B3B3
+	font-size: 0.875rem
+	.labels, .data
+		padding: 0.25rem 0

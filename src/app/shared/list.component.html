@@ -1,0 +1,242 @@
+<div class="row no-margin list-add" *ngFor="let l of list">
+    <div class="col-sm-1 hidden-xs-down"></div>
+    <div class="col hidden-xs-down list-add__list-title text-right">
+        Add to "{{ l.listName }}" ...
+    </div>
+    <div class="hidden-sm-up col-xs-12 list-add__list-title text-left">
+        Add to "{{ l.listName }}" ...
+    </div>
+    <div class="col-xs-12 col-sm-6 no-padding text-left">
+        <addtolist></addtolist>
+    </div>
+    <div class="col-sm-1 hidden-xs-down"></div>
+</div>
+<div class="container-fluid">
+    <div class="list" *ngFor="let l of list; let i = index;">
+        <div class="table__container col">
+            <div class="col list__info">
+                <div class="row">
+                    <div class="col no-padding">
+                        <div class="list__description--name">
+                            <label *ngIf="!isEdit" from="listName"><span class="thin">{{l.listName}}</span></label>
+                            <input *ngIf="isEdit" type="text" id="listName" [(ngModel)]="l.listName">
+                            <button *ngIf="!isEdit" class="list__description--edit" (click)="isEdit=true"><i class="fa fa-pencil"></i></button>
+                            <button *ngIf="isEdit" class="list__description--edit list__description--edit-save" (click)="isEdit=false; updateListName('listName', l.listName, 'edit')" (click)="isEdit=false"><i class="fa fa-save"></i></button>
+                        </div>
+                    </div>
+                    <div class="col text-right no-padding">
+                      <div ngbDropdown class="hidden-sm-up d-inline-block" [open]="false">
+                        <button id="listOptions" class="filter__btn" ngbDropdownToggle><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="listOptions">
+                          <div>
+                            <div class="dropdown-item" (click)="deleteList(l)">Delete List <i class="fa fa-trash" aria-hidden="true"></i></div>
+                            <div class="dropdown-item" (click)="exportList(l.artists)">Export List <i class="fa fa-sign-out" aria-hidden="true"></i></div>
+                            <div class="dropdown-item" ngxClipboard [cbContent]="shareListUrl()" ngbTooltip="URL Copied!" triggers="click:mouseleave">Share List <i class="fa fa-share" aria-hidden="true"></i></div>
+                          </div>
+                        </div>
+                      </div>
+                        <div class="hidden-sm-down list__buttons">
+                            <button class="umg__button button--disabled" (click)="deleteList(l)">Delete List <i class="fa fa-trash" aria-hidden="true"></i></button>
+                            <span class="btn-tooltip" ngbTooltip="{{ globals.exportListTip }}"><button class="umg__button button--disabled" type="button" (click)="exportList(l.artists)">Export List <i class="fa fa-sign-out" aria-hidden="true"></i></button></span>
+                            <span class="btn-tooltip" ngbTooltip="{{ globals.shareTip }}" placement="bottom"><button class="umg__button button--disabled" type="button" ngxClipboard [cbContent]="shareListUrl()" ngbTooltip="URL Copied!" triggers="click:mouseleave">Share List <i class="fa fa-share" aria-hidden="true"></i></button></span>
+                        </div>
+                        <div class="hidden-xs-down">
+                        <div class="list__created--dates">
+                            <div class="list__created inline">
+                                <h5 class="inline">Created</h5>
+                                <span>{{ l.creationDate | date:'yyyy-MM-dd' }}. </span>
+                            </div>
+                            <div class="list__modified inline">
+                                <h5 class="inline">Last Modified</h5>
+                                <span>{{ l.lastModifiedDate | date:'yyyy-MM-dd' }}.</span>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="hidden-xs-up">
+                        <div class="list__created--dates row">
+                            <div class="list__created col-xs-6">
+                                <h5>Created</h5>
+                                <span>{{ l.creationDate | date:'yyyy-MM-dd' }}. </span>
+                            </div>
+                            <div class="list__modified col-xs-6">
+                                <h5>Last Modified</h5>
+                                <span>{{ l.lastModifiedDate | date:'yyyy-MM-dd' }}.</span>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12" *ngIf="l.artists.length != 0">
+                <h2>Artists</h2>
+                <table class="umg__table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ARTIST</th>
+                            <th>RTD</th>
+                            <th>TW</th>
+                            <th>VAR</th>
+                            <th>PHYSICAL<br/>ALBUMS</th>
+                            <th>DIGITAL<br/>ALBUMS</th>
+                            <th>DIGITAL<br/>TRACKS</th>
+                            <th>STREAMS</th>
+                            <th style="color:#A6D9E8;">physical<br/>albums</th>
+                            <th style="color:#74D2E2;">digital<br/>albums</th>
+                            <th style="color:#30C3E5;">digital<br/>tracks</th>
+                            <th style="color:#1BAFEA;">streams</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="umg__table--artists" *ngFor="let item of l.artists; let i = index;">
+                            <td>
+                                <span class="no-trash">{{ i + 1 }}</span>
+                                <span class="trash" (click)="deleteListItem('artists', item._id, 'delete', item)"><i class="fa fa-trash-o"></i></span>
+                            </td>
+                            <td><a href='#/artist/{{ item.canopusID }}'>{{ item.artistName }}</a></td>
+                            <td>{{ item.rtdConsump | number : '1.0-0' }}</td>
+                            <td>{{ item.twConsump | number : '1.0-0' }}</td>
+                            <td>
+                                <span *ngIf="item.twConsump > item.lwConsump" class="diff-up"><i class="fa fa-caret-up" aria-hidden="true"></i> {{ ((item.twConsump - item.lwConsump) / (item.lwConsump)) * 100 | number : '1.1-1' }}%</span>
+                                <span *ngIf="item.twConsump < item.lwConsump" class="diff-down"><i class="fa fa-caret-down" aria-hidden="true"></i> {{ ((item.twConsump - item.lwConsump) / (item.lwConsump)) * 100 | number : '1.1-1' }}%</span>
+                                <span *ngIf="item.twConsump === item.lwConsump"> --</span>
+                            </td>
+                            <td>{{ item.physicalAlbums | number : '1.0-0' }}</td>
+                            <td>{{ item.digitalAlbums | number : '1.0-0' }}</td>
+                            <td>{{ item.digitalTracks | number : '1.0-0' }}</td>
+                            <td>{{ item.streams | number : '1.0-0' }}</td>
+                            <td style="color:#A6D9E8; font-weight: 300;">
+                                <div ngbTooltip="{{ item.physicalAlbums | number : '1.0-0' }}">
+                                    {{ (( item.physicalAlbums)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                                </div>
+                            </td>
+                            <td style="color:#74D2E2; font-weight: 300;">
+                                <div ngbTooltip="{{ item.digitalAlbums | number : '1.0-0' }}">
+                                    {{ (( item.digitalAlbums)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                                </div>
+                            </td>
+                            <td style="color:#30C3E5; font-weight: 300;">
+                                <div ngbTooltip="{{ item.digitalTracks | number : '1.0-0' }}">
+                                    {{ (( item.digitalTracks)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                                </div>
+                            </td>
+                            <td style="color:#1BAFEA; font-weight: 300;">
+                                <div ngbTooltip="{{ item.streams | number : '1.0-0' }}">
+                                    {{ (( item.streams)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-12" *ngIf="l.projects.length != 0">
+                <h2>Projects</h2>
+                <div>
+                    <table class="umg__table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ARTIST</th>
+                                <th>PROJECT<br/>NAME</th>
+                                <th>LABEL</th>
+                                <th>RELEASE<br/>DATE</th>
+                                <th>RTD</th>
+                                <th>TW</th>
+                                <th>VAR</th>
+                                <th style="color:#A6D9E8;">physical<br/>albums</th>
+                                <th style="color:#74D2E2;">digital<br/>albums</th>
+                                <th style="color:#30C3E5;">digital<br/>tracks</th>
+                                <th style="color:#1BAFEA;">streams</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of l.projects; let i = index;">
+                                <td>
+                                    <span class="no-trash">{{ i + 1 }}</span>
+                                    <span class="trash" (click)="deleteListItem('projects', item._id, 'delete', item)"><i class="fa fa-trash-o"></i></span>
+                                </td>
+                                <td><a href='#/artist/{{ item.canopusID }}'>{{ item.artistName }}</a></td>
+                                <td><a href='#/artist/{{ item.canopusID }}/{{ item.projectID }}'>{{ item.projectName }}</a></td>
+                                <td>{{ item.label }}</td>
+                                <td>{{ item.releaseDate | date:'yyyy-MM-dd' }}</td>
+                                <td>{{ item.rtdConsump | number : '1.0-0' }}</td>
+                                <td>{{ item.twConsump | number : '1.0-0' }}</td>
+                                <td>
+                                    <span *ngIf="item.twConsump > item.lwConsump" class="diff-up"><i class="fa fa-caret-up" aria-hidden="true"></i> {{ ((item.twConsump - item.lwConsump) / (item.lwConsump)) * 100 | number : '1.1-1' }}%</span>
+                                    <span *ngIf="item.twConsump < item.lwConsump" class="diff-down"><i class="fa fa-caret-down" aria-hidden="true"></i> {{ ((item.twConsump - item.lwConsump) / (item.lwConsump)) * 100 | number : '1.1-1' }}%</span>
+                                    <span *ngIf="item.twConsump === item.lwConsump"> --</span>
+                                </td>
+                                <td style="color:#A6D9E8; font-weight: 300;">
+                                    <div ngbTooltip="{{ item.physicalAlbums | number : '1.0-0' }}">
+                                        {{ (( item.physicalAlbums)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                                    </div>
+                                </td>
+                                <td style="color:#74D2E2; font-weight: 300;">
+                                    <div ngbTooltip="{{ item.digitalAlbums | number : '1.0-0' }}">
+                                        {{ (( item.digitalAlbums)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                                    </div>
+                                </td>
+                                <td style="color:#30C3E5; font-weight: 300;">
+                                    <div ngbTooltip="{{ item.digitalTracks | number : '1.0-0' }}">
+                                        {{ (( item.digitalTracks)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                                    </div>
+                                </td>
+                                <td style="color:#1BAFEA; font-weight: 300;">
+                                    <div ngbTooltip="{{ item.streams | number : '1.0-0' }}">
+                                        {{ (( item.streams)/(item.physicalAlbums + item.digitalAlbums + item.digitalTracks + item.streams )) * 100 | number : '1.2-2' }}%
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-12" *ngIf="l.tracks.length != 0">
+                <h2>Tracks</h2>
+                <div>
+                    <table class="umg__table umg__table--tracks">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ARTIST</th>
+                                <th>TITLE</th>
+                                <th>LABEL</th>
+                                <th>RELEASE DATE</th>
+                                <th>RTD</th>
+                                <th>TW</th>
+                                <th>VAR</th>
+                                <th>TRACK SALES</th>
+                                <th>STREAMS TOTAL</th>
+                                <th>AUDIO STREAMS</th>
+                                <th>VIDEO STREAMS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of l.tracks; let i = index;">
+                                <td>
+                                    <span class="no-trash">{{ i + 1 }}</span>
+                                    <span class="trash" (click)="deleteListItem('tracks', item._id, 'delete', item)"><i class="fa fa-trash-o"></i></span>
+                                </td>
+                                <td><a href='#/artist/{{ item.canopusID }}'>{{ item.artistName }}</a></td>
+                                <td><a href='#/artist/{{ item.canopusID }}/{{ item.projectID }}/{{ item.isrc }}'>{{ item.name || item.trackName }}</a></td>
+                                <td>{{ item.label }}</td>
+                                <td>{{ item.releaseDate | date:'yyyy-MM-dd' }}</td>
+                                <td>{{ item.rtdConsump | number : '1.0-0' }}</td>
+                                <td>{{ item.twConsump | number : '1.0-0' }}</td>
+                                <td>
+                                    <span *ngIf="item.twConsump > item.lwConsump" class="diff-up"><i class="fa fa-caret-up" aria-hidden="true"></i> {{ ((item.twConsump - item.lwConsump) / (item.lwConsump)) * 100 | number : '1.1-1' }}%</span>
+                                    <span *ngIf="item.twConsump < item.lwConsump" class="diff-down"><i class="fa fa-caret-down" aria-hidden="true"></i> {{ ((item.twConsump - item.lwConsump) / (item.lwConsump)) * 100 | number : '1.1-1' }}%</span>
+                                    <span *ngIf="item.twConsump === item.lwConsump"> --</span>
+                                </td>
+                                <td>{{ item.trackSales | number : '1.0-0' }}</td>
+                                <td>{{ item.streamsTotal | number : '1.0-0' }}</td>
+                                <td>{{ item.audioStreams | number : '1.0-0' }}</td>
+                                <td>{{ item.videoStreams | number : '1.0-0' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
